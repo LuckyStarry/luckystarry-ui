@@ -4,7 +4,7 @@ import { RouteConfig } from 'vue-router'
 import { SideBarItemLink } from './components'
 import { isExternal } from './utils'
 
-@Component({ components: { SideBarItemLink } })
+@Component({ name: 'side-bar-item', components: { SideBarItemLink } })
 export default class SideBarItem extends Vue {
   @Prop({ required: true }) private item!: RouteConfig
   @Prop({ default: false }) private isCollapse!: boolean
