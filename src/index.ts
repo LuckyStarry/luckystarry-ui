@@ -1,7 +1,9 @@
 import { App } from './app'
-import { Layout } from './layout'
+import { AppMain, Layout } from './layout'
 export { Builder } from './builder'
-export { App, Layout }
+export { App }
+export { Layout }
+export { AppMain }
 const components = { App, Layout }
 const ls: any = Object.assign({}, components)
 const install = function(Vue: any, opts?: any) {

@@ -15,6 +15,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "outDir": "lib",
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
