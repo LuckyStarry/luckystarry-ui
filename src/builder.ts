@@ -1,6 +1,5 @@
 import ElementUI, { Message, MessageBox } from 'element-ui'
 import luckystarry, { Context } from 'luckystarry-ui-utils'
-import 'normalize.css'
 import nprogress from 'nprogress'
 import Vue from 'vue'
 import { App } from './app'
