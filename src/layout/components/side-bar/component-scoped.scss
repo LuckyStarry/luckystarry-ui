@@ -1,0 +1,15 @@
+.el-scrollbar {
+  height: 100%;
+}
+
+.has-logo {
+  .el-scrollbar {
+    height: calc(100% - 50px);
+  }
+}
+
+.el-menu {
+  border: none;
+  height: 100%;
+  width: 100% !important;
+}

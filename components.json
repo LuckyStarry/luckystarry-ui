@@ -1,0 +1,5 @@
+{
+  "index": "./src/index",
+  "app": "./src/app",
+  "layout": "./src/layout"
+}

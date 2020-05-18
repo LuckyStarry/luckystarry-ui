@@ -1,0 +1,17 @@
+{
+  "extends": "tslint-config-standard",
+  "linterOptions": {
+    "exclude": ["node_modules/**/*"]
+  },
+  "globals": {
+    "require": true
+  },
+  "rules": {
+    "class-name": false,
+    "space-before-function-paren": false,
+    "member-ordering": false,
+    "no-return-await": false,
+    "ter-func-call-spacing": false,
+    "no-empty": false
+  }
+}
