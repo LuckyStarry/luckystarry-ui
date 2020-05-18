@@ -26,7 +26,7 @@
         <span v-if="item.meta && item.meta.title" slot="title">{{ $t('route.' + item.meta.title) }}</span>
       </template>
       <template v-if="item.children">
-        <sidebar-item
+        <side-bar-item
           v-for="child in item.children"
           :key="child.path"
           :item="child"
