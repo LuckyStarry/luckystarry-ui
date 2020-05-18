@@ -53,7 +53,7 @@ module.exports = {
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: '/theme/[name].css'
-        }),
+        })
     ],
     externals: {
         vue: {

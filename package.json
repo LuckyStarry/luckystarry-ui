@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "clean": "del-cli dist -f",
+    "clean": "del-cli lib -f",
     "lint": "tslint -p . -c tslint.json 'src/**/*.ts'",
     "prebuild": "npm run clean && npm run lint",
     "build": "webpack --mode production --config webpack.config.js",
