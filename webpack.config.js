@@ -1,5 +1,6 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const components = require('./components.json')
 const entry = {}
 Object.keys(components).forEach(item => {
@@ -30,9 +31,8 @@ module.exports = {
                 loader: 'url-loader?limit=8192'
             },
             {
-                test: /\.scss$/,
-                exclude: /node_modules/,
-                use: ['css-loader', 'sass-loader']
+                test: /\.(sa|sc)ss$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
             },
             {
                 test: /\.vue$/,
@@ -50,7 +50,10 @@ module.exports = {
         extensions: ['.ts', '.js', '.vue'],
     },
     plugins: [
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '/theme/[name].css'
+        }),
     ],
     externals: {
         vue: {

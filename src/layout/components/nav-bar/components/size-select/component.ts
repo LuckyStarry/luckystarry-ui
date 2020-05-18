@@ -14,7 +14,8 @@ export default class SizeSelect extends Vue {
   public size!: string
 
   private async handleSetSize(size: string) {
-    ;(this as any).$ELEMENT.size = size
+    let $ELEMENT = (this as any).$ELEMENT
+    $ELEMENT.size = size
     await this.$store.dispatch('app/SetSize', size)
     await this.refreshView()
   }
