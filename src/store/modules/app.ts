@@ -13,12 +13,12 @@ export interface IAppState {
 }
 
 @Module({ namespaced: true })
-export class App extends VuexModule<IAppState, IRootState>
-  implements IAppState {
+export class App extends VuexModule<IAppState, IRootState> implements IAppState {
   public sidebar = {
     opened: true,
     withoutAnimation: false
   }
+
   public device = DeviceType.Desktop
   public size = 'mini'
 
@@ -35,10 +35,7 @@ export class App extends VuexModule<IAppState, IRootState>
   }
 
   @Mutation
-  private TOGGLE_SIDEBAR(payload: {
-    withoutAnimation: boolean
-    context: Context
-  }) {
+  private TOGGLE_SIDEBAR(payload: { withoutAnimation: boolean; context: Context }) {
     this.sidebar.opened = !this.sidebar.opened
     this.sidebar.withoutAnimation = payload.withoutAnimation
     if (this.sidebar.opened) {
@@ -49,10 +46,7 @@ export class App extends VuexModule<IAppState, IRootState>
   }
 
   @Mutation
-  private CLOSE_SIDEBAR(payload: {
-    withoutAnimation: boolean
-    context: Context
-  }) {
+  private CLOSE_SIDEBAR(payload: { withoutAnimation: boolean; context: Context }) {
     this.sidebar.opened = false
     this.sidebar.withoutAnimation = payload.withoutAnimation
     payload.context.system.setSidebarStatus('closed')
@@ -64,25 +58,19 @@ export class App extends VuexModule<IAppState, IRootState>
   }
 
   @Mutation
-  private SET_SIZE(size: string) {
-    this.size = size
-    this.context.rootState.context.system.setSize(this.size)
+  private SET_SIZE(payload: { size: string; context: Context }) {
+    this.size = payload.size
+    payload.context.system.setSize(this.size)
   }
 
   @Action
   public ToggleSideBar(withoutAnimation: boolean) {
-    this.context.commit('TOGGLE_SIDEBAR', {
-      withoutAnimation,
-      context: this.context.rootState.context
-    })
+    this.context.commit('TOGGLE_SIDEBAR', { withoutAnimation, context: this.context.rootState.context })
   }
 
   @Action
   public CloseSideBar(withoutAnimation: boolean) {
-    this.context.commit('CLOSE_SIDEBAR', {
-      withoutAnimation,
-      context: this.context.rootState.context
-    })
+    this.context.commit('CLOSE_SIDEBAR', { withoutAnimation, context: this.context.rootState.context })
   }
 
   @Action
@@ -92,6 +80,6 @@ export class App extends VuexModule<IAppState, IRootState>
 
   @Action
   public SetSize(size: string) {
-    this.context.commit('SET_SIZE', size)
+    this.context.commit('SET_SIZE', { size, context: this.context.rootState.context })
   }
 }
