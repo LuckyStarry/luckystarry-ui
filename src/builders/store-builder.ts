@@ -1,14 +1,6 @@
 import { Store } from 'vuex'
 import { Context } from '../context'
-import {
-  App,
-  ErrorLog,
-  IRootState,
-  Permission,
-  Settings,
-  TagsView,
-  User
-} from '../store'
+import { App, ErrorLog, IRootState, Permission, Settings, TagsView, User } from '../store'
 
 export class StoreBuilder {
   private context: Context
@@ -32,6 +24,8 @@ export class StoreBuilder {
     if (token) {
       store.state.user.token = token
     }
+    let size = this.context.system.getSize() || 'mini'
+    store.state.app.size = size
     return store
   }
 }

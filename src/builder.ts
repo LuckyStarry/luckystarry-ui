@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios'
 import ElementUI from 'element-ui'
 import { v4 as uuid } from 'uuid'
-import Vue, { VueConstructor } from 'vue'
+import Vue, { DirectiveOptions, VueConstructor } from 'vue'
 import VueRouter, { Route } from 'vue-router'
 import { Store } from 'vuex'
 import { App } from './app'
@@ -104,17 +104,22 @@ export class Builder {
     axiosInterceptor(this._axios, store, this._message, this._message_box)
     routerInterceptor(router, store, this._process, this._message)
 
-    Vue.use(ElementUI, {
-      size: 'mini'
+    Vue.use(ElementUI, { size: store.state.app.size })
+
+    let directives = { permission: new Premission(store) }
+    Object.keys(directives).forEach(key => {
+      Vue.directive(key, (directives as { [key: string]: DirectiveOptions })[key])
+    })
+
+    Object.keys(this._filters).forEach(key => {
+      Vue.filter(key, (this._filters as { [key: string]: Function })[key])
     })
 
     let app = new Vue({
       router,
       store,
       ...this._payload,
-      render: h => h(this._app),
-      directives: { permission: new Premission(store) },
-      filters: this._filters
+      render: h => h(this._app)
     })
     app.$mount('#app')
     return app
