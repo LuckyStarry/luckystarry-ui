@@ -1,7 +1,8 @@
-import luckystarry, { store } from 'luckystarry-ui-utils'
 import { mixins } from 'vue-class-component'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import { Resize } from '../mixins'
+import { DeviceType } from '../store'
 import {
   AppMain,
   NavBar,
@@ -21,13 +22,13 @@ import {
     TagsView
   }
 })
-export default class Layout extends mixins(luckystarry.mixins.Resize) {
+export default class Layout extends mixins(Resize) {
   public get classObj() {
     return {
       hideSidebar: !this.sidebar.opened,
       openSidebar: this.sidebar.opened,
       withoutAnimation: this.sidebar.withoutAnimation,
-      mobile: this.device === store.DeviceType.Mobile
+      mobile: this.device === DeviceType.Mobile
     }
   }
 

@@ -1,0 +1,1 @@
+export { Premission } from './permission'

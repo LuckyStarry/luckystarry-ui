@@ -2,9 +2,21 @@ const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const components = require('./components.json')
+const package = require('./package.json')
 const entry = {}
 Object.keys(components).forEach(item => {
     entry[item] = components[item]
+})
+const {
+    dependencies
+} = package
+const externals = {}
+Object.keys(dependencies).forEach(item => {
+    externals[item] = {
+        commonjs: item,
+        commonjs2: item,
+        amd: item
+    }
 })
 
 module.exports = {
@@ -55,34 +67,5 @@ module.exports = {
             filename: '/theme/[name].css'
         })
     ],
-    externals: {
-        vue: {
-            root: 'Vue',
-            commonjs: 'vue',
-            commonjs2: 'vue',
-            amd: 'vue'
-        },
-        vuex: {
-            root: 'Vuex',
-            commonjs: 'vuex',
-            commonjs2: 'vuex',
-            amd: 'vuex'
-        },
-        ['luckystarry-ui-utils']: {
-            root: 'lsui',
-            commonjs: 'luckystarry-ui-utils',
-            commonjs2: 'luckystarry-ui-utils',
-            amd: 'luckystarry-ui-utils'
-        },
-        ['vue-class-component']: {
-            commonjs: 'vue-class-component',
-            commonjs2: 'vue-class-component',
-            amd: 'vue-class-component'
-        },
-        ['screenfull']: {
-            commonjs: 'screenfull',
-            commonjs2: 'screenfull',
-            amd: 'screenfull'
-        }
-    },
+    externals
 }
