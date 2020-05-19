@@ -8,6 +8,7 @@ import { App } from './app'
 import * as builders from './builders'
 import { Context } from './context'
 import { Premission } from './directives'
+import * as filters from './filters'
 import { IRootState } from './store'
 import { helper, ui } from './utils'
 
@@ -106,7 +107,8 @@ export class Builder {
       store,
       ...this._payload,
       render: h => h(this._app),
-      directives: { permission: new Premission(store) }
+      directives: { permission: new Premission(store) },
+      filters
     })
     app.$mount('#app')
     return app
