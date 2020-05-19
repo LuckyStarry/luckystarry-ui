@@ -6,9 +6,10 @@
   "scripts": {
     "clean": "del-cli lib -f",
     "lint": "tslint -p . -c tslint.json 'src/**/*.ts'",
-    "prebuild": "npm run clean && npm run lint",
+    "prebuild": "npm run clean && npm run svg && npm run lint",
     "build": "webpack --mode production --config webpack.config.js",
-    "test": "echo SUCCESS"
+    "test": "echo SUCCESS",
+    "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.1.6",
+    "vue-svgicon": "^3.2.6",
     "vuex": "^3.4.0",
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^0.17.0"

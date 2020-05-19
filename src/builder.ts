@@ -3,12 +3,14 @@ import ElementUI from 'element-ui'
 import { v4 as uuid } from 'uuid'
 import Vue, { DirectiveOptions, VueConstructor } from 'vue'
 import VueRouter, { Route } from 'vue-router'
+import VueIcon from 'vue-svgicon'
 import { Store } from 'vuex'
 import { App } from './app'
 import * as builders from './builders'
 import { Context } from './context'
 import { Premission } from './directives'
 import * as filters from './filters'
+import './icons/components'
 import { IRootState } from './store'
 import { helper, ui } from './utils'
 
@@ -105,6 +107,7 @@ export class Builder {
     routerInterceptor(router, store, this._process, this._message)
 
     Vue.use(ElementUI, { size: store.state.app.size })
+    Vue.use(VueIcon, { tagName: 'svg-icon', defaultWidth: '1em', defaultHeight: '1em' })
 
     let directives = { permission: new Premission(store) }
     Object.keys(directives).forEach(key => {
