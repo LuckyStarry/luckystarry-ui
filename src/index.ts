@@ -15,8 +15,7 @@ export { mixins }
 export { App }
 export { Layout }
 export { AppMain }
-const components = { App, Layout }
-const LSUI: any = Object.assign({}, components)
+const components = { App, Layout, AppMain }
 const install = function(Vue: any, opts?: any) {
   if ((install as any).installed) return
 
@@ -28,8 +27,7 @@ const install = function(Vue: any, opts?: any) {
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
-LSUI.install = install
-export default LSUI
+export default { models, utils, Builder, Context, store, mixins, App, Layout, AppMain, install }
 declare global {
   interface Date {
     toSmartString(): string
