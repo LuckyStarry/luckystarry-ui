@@ -24,6 +24,7 @@ export class Builder {
   private _context: Context
   private _title!: string
   private _axios!: AxiosInstance
+  private _filters: { [key: string]: Function } = Object.assign({}, filters)
 
   public constructor(context?: Context) {
     this._context = context || new Context()
@@ -85,6 +86,11 @@ export class Builder {
     this._axios = axios
   }
 
+  public filters(filters: { [key: string]: Function }): Builder {
+    Object.assign(this._filters, filters)
+    return this
+  }
+
   public build(): Vue {
     if (!this._routers) {
       this.router(() => {})
@@ -108,7 +114,7 @@ export class Builder {
       ...this._payload,
       render: h => h(this._app),
       directives: { permission: new Premission(store) },
-      filters
+      filters: this._filters
     })
     app.$mount('#app')
     return app
