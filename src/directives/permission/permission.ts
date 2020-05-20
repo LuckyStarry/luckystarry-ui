@@ -1,7 +1,7 @@
 import { DirectiveOptions } from 'vue'
 import { DirectiveBinding } from 'vue/types/options'
 import { Store } from 'vuex'
-import { IRootState } from '../store'
+import { IRootState } from '../../store'
 
 export class Premission implements DirectiveOptions {
   private store: Store<IRootState>

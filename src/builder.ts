@@ -8,7 +8,7 @@ import { Store } from 'vuex'
 import { App } from './app'
 import * as builders from './builders'
 import { Context } from './context'
-import { Premission } from './directives'
+import { ElDraggableDialog, Premission, Waves } from './directives'
 import * as filters from './filters'
 import './icons/components'
 import { IRootState } from './store'
@@ -122,7 +122,12 @@ export class Builder {
     Vue.use(ElementUI, { size: store.state.app.size })
     Vue.use(VueIcon, { tagName: 'svg-icon', defaultWidth: '1em', defaultHeight: '1em' })
 
-    let directives = { permission: new Premission(store) }
+    let directives = {
+      ['permission']: new Premission(store),
+      ['waves']: new Waves(),
+      ['el-draggable-dialog']: new ElDraggableDialog()
+    }
+
     Object.keys(directives).forEach(key => {
       Vue.directive(key, (directives as { [key: string]: DirectiveOptions })[key])
     })
@@ -141,8 +146,6 @@ export class Builder {
     return app
   }
 }
-
-const MESSAGE_RELOGIN: string = '你已被登出，可以取消继续留在该页面，或者重新登录'
 
 function axiosInterceptor(axios: AxiosInstance, store: Store<IRootState>, message: ui.Message, messagebox: ui.MessageBox) {
   if (!axios) {
@@ -171,7 +174,7 @@ function axiosInterceptor(axios: AxiosInstance, store: Store<IRootState>, messag
             if (messagebox) {
               // tslint:disable-next-line: no-floating-promises
               messagebox
-                .confirm(MESSAGE_RELOGIN, '确定登出', {
+                .confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
                   confirmButtonText: '重新登录',
                   cancelButtonText: '取消',
                   type: 'warning'
