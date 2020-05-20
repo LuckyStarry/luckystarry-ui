@@ -25,6 +25,7 @@ export class Builder {
   private _message_box!: ui.MessageBox
   private _context: Context
   private _title!: string
+  private _logo!: string
   private _axios!: AxiosInstance
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
 
@@ -93,6 +94,11 @@ export class Builder {
     return this
   }
 
+  public logo(svgName: string): Builder {
+    this._logo = svgName
+    return this
+  }
+
   public build(): Vue {
     if (!this._routers) {
       this.router(() => {})
@@ -102,6 +108,13 @@ export class Builder {
     }
     let router = this._routers
     let store = this._store
+
+    if (this._title) {
+      store.state.app.title = this._title
+    }
+    if (this._logo) {
+      store.state.app.logo = this._logo
+    }
 
     axiosInterceptor(this._axios, store, this._message, this._message_box)
     routerInterceptor(router, store, this._process, this._message)

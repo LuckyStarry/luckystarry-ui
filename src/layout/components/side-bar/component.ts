@@ -2,9 +2,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import { RouteConfig } from 'vue-router'
 import { Getter } from 'vuex-class'
 import variables from '../../../styles/_variables.scss'
-import { SideBarItem } from './components'
+import { SideBarItem, SideBarLogo } from './components'
 
-@Component({ components: { SideBarItem } })
+@Component({ components: { SideBarItem, SideBarLogo } })
 export default class SideBar extends Vue {
   @Getter('app/Sidebar')
   public sidebar!: { opened: boolean; withoutAnimation: boolean }

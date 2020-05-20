@@ -10,6 +10,8 @@ export interface IAppState {
     withoutAnimation: boolean
   }
   size: string
+  title: string
+  logo: string
 }
 
 @Module({ namespaced: true })
@@ -21,6 +23,8 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
 
   public device = DeviceType.Desktop
   public size = 'mini'
+  public title = ''
+  public logo = ''
 
   public get Sidebar() {
     return this.sidebar
@@ -32,6 +36,14 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
 
   public get Device(): DeviceType {
     return this.device
+  }
+
+  public get Title(): string {
+    return this.title
+  }
+
+  public get Logo(): string {
+    return this.logo
   }
 
   @Mutation
