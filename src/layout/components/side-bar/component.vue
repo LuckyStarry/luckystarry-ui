@@ -25,5 +25,4 @@
   </div>
 </template>
 <script lang="ts" src="./component.ts" />
-<style lang="scss" src="./component.scss"></style>
-<style lang="scss" src="./component-scoped.scss" scoped/>
+<style lang="scss" src="./component.scss" />

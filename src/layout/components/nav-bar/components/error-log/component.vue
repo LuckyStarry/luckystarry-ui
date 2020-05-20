@@ -41,4 +41,4 @@
   </div>
 </template>
 <script lang="ts" src="./component.ts" />
-<style lang="scss" src="./component.scss" scoped/>
+<style lang="scss" src="./component.scss" />

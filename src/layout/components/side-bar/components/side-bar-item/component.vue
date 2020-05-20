@@ -1,5 +1,6 @@
 <template>
   <div
+    class="side-bar-item"
     v-if="!item.meta || !item.meta.hidden"
     :class="[isCollapse ? 'simple-mode' : 'full-mode', {'first-level': isFirstLevel}]"
   >
@@ -40,5 +41,4 @@
   </div>
 </template>
 <script lang="ts" src="./component.ts" />
-<style lang="scss" src="./component.scss"></style>
-<style lang="scss" src="./component-scoped.scss" scoped/>
+<style lang="scss" src="./component.scss" />

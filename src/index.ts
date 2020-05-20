@@ -1,3 +1,4 @@
+import './styles/index.scss'
 import { App } from './app'
 import { Builder } from './builder'
 import * as components from './components'

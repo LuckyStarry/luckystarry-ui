@@ -1,7 +1,9 @@
-.svg-icon {
-  vertical-align: middle;
-}
+.hamburger {
+  .svg-icon {
+    vertical-align: middle;
+  }
 
-.is-active {
-  transform: rotate(180deg);
+  .is-active {
+    transform: rotate(180deg);
+  }
 }
