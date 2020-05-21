@@ -21,13 +21,13 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left: left+'px', top: top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
+      <li @click="refreshSelectedTag(selectedTag)">{{ $t('tags-view.refresh') }}</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
         {{
-        $t('tagsView.close') }}
+        $t('tags-view.close') }}
       </li>
-      <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
-      <li @click="closeAllTags(selectedTag)">{{ $t('tagsView.closeAll') }}</li>
+      <li @click="closeOthersTags">{{ $t('tags-view.closeOthers') }}</li>
+      <li @click="closeAllTags(selectedTag)">{{ $t('tags-view.closeAll') }}</li>
     </ul>
   </div>
 </template>

@@ -25,7 +25,10 @@ export class StoreBuilder {
       store.state.user.token = token
     }
     let size = this.context.system.getSize() || 'mini'
+    let language = this.context.system.getLanguage() || 'zh'
+
     store.state.app.size = size
+    store.state.app.language = language
     return store
   }
 }

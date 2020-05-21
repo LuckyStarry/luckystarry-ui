@@ -5,3 +5,7 @@ declare module '*.vue' {
 
 declare module '*.gif'
 declare module '*.png'
+
+declare module 'element-ui/lib/locale/lang/*' {
+  export const elementLocale: any
+}

@@ -22,12 +22,15 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item disabled title="支持中，敬请期待。">{{ $t('navbar.profile') }}</el-dropdown-item>
+          <el-dropdown-item
+            disabled
+            :title="$t('common.system.not-implement')"
+          >{{ $t('navbar.profile') }}</el-dropdown-item>
           <router-link to="/">
             <el-dropdown-item>{{ $t('navbar.dashboard') }}</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">{{ $t('navbar.logOut') }}</span>
+            <span style="display:block;">{{ $t('navbar.log-out') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

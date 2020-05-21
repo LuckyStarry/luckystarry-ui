@@ -49,6 +49,8 @@ export interface Token {
 export interface System {
   setSize(value: string): void
   getSize(): string
+  setLanguage(value: string): void
+  getLanguage(): string
   setSidebarStatus(value: string): void
   getSidebarStatus(): string
 }
@@ -155,6 +157,13 @@ class DefaultSystem implements System {
   private context: Context
   public constructor(context: Context) {
     this.context = context
+  }
+
+  public setLanguage(value: string): void {
+    this.context.cookie.set('LANGUAGE', value)
+  }
+  public getLanguage(): string {
+    return this.context.cookie.get('LANGUAGE')
   }
 
   public setSize(value: string): void {

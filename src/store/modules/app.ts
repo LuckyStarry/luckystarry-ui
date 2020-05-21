@@ -4,7 +4,6 @@ import { DeviceType } from '../device-type'
 import { IRootState } from '../root-state'
 
 export interface IAppState {
-  device: DeviceType
   sidebar: {
     opened: boolean
     withoutAnimation: boolean
@@ -12,6 +11,8 @@ export interface IAppState {
   size: string
   title: string
   logo: string
+  language: string
+  device: DeviceType
 }
 
 @Module({ namespaced: true })
@@ -25,6 +26,7 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
   public size = 'mini'
   public title = ''
   public logo = ''
+  public language = 'zh'
 
   public get Sidebar() {
     return this.sidebar
@@ -44,6 +46,10 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
 
   public get Logo(): string {
     return this.logo
+  }
+
+  public get Language(): string {
+    return this.language
   }
 
   @Mutation
@@ -75,6 +81,12 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
     payload.context.system.setSize(this.size)
   }
 
+  @Mutation
+  private SET_LANGUAGE(payload: { language: string; context: Context }) {
+    this.language = payload.language
+    payload.context.system.setLanguage(this.language)
+  }
+
   @Action
   public ToggleSideBar(withoutAnimation: boolean) {
     this.context.commit('TOGGLE_SIDEBAR', { withoutAnimation, context: this.context.rootState.context })
@@ -93,5 +105,10 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
   @Action
   public SetSize(size: string) {
     this.context.commit('SET_SIZE', { size, context: this.context.rootState.context })
+  }
+
+  @Action
+  public SetLanguage(language: string) {
+    this.context.commit('SET_LANGUAGE', { language, context: this.context.rootState.context })
   }
 }

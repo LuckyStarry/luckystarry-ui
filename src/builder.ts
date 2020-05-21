@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios'
 import ElementUI from 'element-ui'
 import { v4 as uuid } from 'uuid'
 import Vue, { DirectiveOptions, VueConstructor } from 'vue'
+import VueI18n, { LocaleMessageObject, LocaleMessages } from 'vue-i18n'
 import VueRouter, { Route } from 'vue-router'
 import VueIcon from 'vue-svgicon'
 import { Store } from 'vuex'
@@ -11,6 +12,7 @@ import { Context } from './context'
 import { ElDraggableDialog, Premission, Waves } from './directives'
 import * as filters from './filters'
 import './icons/components'
+import * as lang from './lang'
 import { IRootState } from './store'
 import { helper, ui } from './utils'
 
@@ -28,6 +30,7 @@ export class Builder {
   private _logo!: string
   private _axios!: AxiosInstance
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
+  private _messages: LocaleMessages = { zh: lang.zh }
 
   public constructor(context?: Context) {
     this._context = context || new Context()
@@ -99,6 +102,13 @@ export class Builder {
     return this
   }
 
+  public i18n(name: string, config: (message: LocaleMessageObject) => LocaleMessageObject): Builder {
+    let message: LocaleMessageObject = this._messages[name] || {}
+    let obj = config(message)
+    this._messages[name] = obj || message
+    return this
+  }
+
   public build(): Vue {
     if (!this._routers) {
       this.router(() => {})
@@ -119,6 +129,7 @@ export class Builder {
     axiosInterceptor(this._axios, store, this._message, this._message_box)
     routerInterceptor(router, store, this._process, this._message)
 
+    Vue.use(VueI18n)
     Vue.use(ElementUI, { size: store.state.app.size })
     Vue.use(VueIcon, { tagName: 'svg-icon', defaultWidth: '1em', defaultHeight: '1em' })
 
@@ -136,9 +147,11 @@ export class Builder {
       Vue.filter(key, (this._filters as { [key: string]: Function })[key])
     })
 
+    let i18n = new VueI18n({ locale: 'zh', messages: this._messages })
     let app = new Vue({
       router,
       store,
+      i18n,
       ...this._payload,
       render: h => h(this._app)
     })
