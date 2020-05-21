@@ -4,7 +4,7 @@ import { Profile } from './models'
 
 export class Context {
   public constructor() {
-    this.apis = { getProfile: () => Promise.reject('未实现的方法') }
+    this.apis = new DefaultApis(this)
     this.routes = new DefaultRoutes(this)
     this.cookie = new DefaultCookie(this)
     this.token = new DefaultToken(this)
@@ -23,6 +23,7 @@ export class Context {
 
 export interface Apis {
   getProfile(): Promise<Profile>
+  logout(): Promise<void>
 }
 
 export interface Routes {
@@ -34,11 +35,7 @@ export interface Routes {
 }
 
 export interface Cookie {
-  set(
-    key: string,
-    value: String,
-    payload?: { expiry?: Date; domain?: string }
-  ): void
+  set(key: string, value: String, payload?: { expiry?: Date; domain?: string }): void
   get(key: string): string
   delete(key: string): void
 }
@@ -54,6 +51,20 @@ export interface System {
   getSize(): string
   setSidebarStatus(value: string): void
   getSidebarStatus(): string
+}
+
+class DefaultApis implements Apis {
+  private context: Context
+  public constructor(context: Context) {
+    this.context = context
+  }
+
+  public getProfile(): Promise<Profile> {
+    throw new Error('Method not implemented.')
+  }
+  public logout(): Promise<void> {
+    return Promise.resolve()
+  }
 }
 
 class DefaultRoutes implements Routes {
@@ -72,7 +83,7 @@ class DefaultRoutes implements Routes {
   }
   public add(...route: RouteConfig[]): void {}
   public create(): VueRouter {
-    return new VueRouter({
+    let router = new VueRouter({
       mode: 'history',
       scrollBehavior: (to, from, savedPosition) => {
         if (savedPosition) {
@@ -84,6 +95,10 @@ class DefaultRoutes implements Routes {
       base: process.env.BASE_URL,
       routes: this.constants
     })
+    if (!this.router) {
+      this.router = router
+    }
+    return router
   }
 }
 
@@ -93,11 +108,7 @@ class DefaultCookie implements Cookie {
     this.context = context
   }
 
-  public set(
-    key: string,
-    value: String,
-    payload?: { expiry?: Date; domain?: string }
-  ): void {
+  public set(key: string, value: String, payload?: { expiry?: Date; domain?: string }): void {
     if (payload) {
       let options: CookieAttributes = {}
       if (payload.expiry) {

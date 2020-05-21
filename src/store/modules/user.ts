@@ -13,8 +13,7 @@ export interface IUserState {
 }
 
 @Module({ namespaced: true })
-export class User extends VuexModule<IUserState, IRootState>
-  implements IUserState {
+export class User extends VuexModule<IUserState, IRootState> implements IUserState {
   public token = ''
   public id = ''
   public name = ''
@@ -134,36 +133,34 @@ export class User extends VuexModule<IUserState, IRootState>
 
   @Action
   public async ChangeRoles(role: string) {
-    // Dynamically modify permissions
     const token = role + '-token'
     this.context.commit('SET_TOKEN', token)
     this.context.rootState.context.token.set(token)
     await this.GetUserInfo()
     this.context.rootState.context.routes.reset()
-    // Generate dynamic accessible routes based on roles
-    await this.context.dispatch('premission/GenerateRoutes', this.roles, {
-      root: true
-    })
-    // Add generated routes
-    let dynamicRoutes: RouteConfig[] = this.context.getters[
-      'premission/Dynamic'
-    ]
+    await this.context.dispatch('premission/GenerateRoutes', this.roles, { root: true })
+    let dynamicRoutes: RouteConfig[] = this.context.getters['premission/Dynamic']
     this.context.rootState.context.routes.add(...dynamicRoutes)
-    // Reset visited views and cached views
-    await this.context.dispatch('treeView/delAllViews')
+    await this.context.dispatch('tagsView/delAllViews', null, { root: true })
   }
 
   @Action
   public async LogOut() {
-    if (this.token === '') {
-      throw Error('LogOut: token is undefined!')
+    if (this.context.state.token === '') {
+      console.error('LogOut: token is undefined!')
+      this.context.rootState.context.token.delete()
+      this.context.rootState.context.routes.reset()
+      await this.context.dispatch('tagsView/delAllViews', null, { root: true })
+      this.context.commit('SET_TOKEN', '')
+      this.context.commit('SET_ROLES', [])
+      return
     }
-    // await api.oauth.logout()
+
+    await this.context.rootState.context.apis.logout()
     this.context.rootState.context.token.delete()
     this.context.rootState.context.routes.reset()
 
-    // Reset visited views and cached views
-    await this.context.dispatch('treeView/delAllViews')
+    await this.context.dispatch('tagsView/delAllViews', null, { root: true })
     this.context.commit('SET_TOKEN', '')
     this.context.commit('SET_ROLES', [])
   }
