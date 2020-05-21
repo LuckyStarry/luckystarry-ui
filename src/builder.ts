@@ -181,7 +181,7 @@ function axiosInterceptor(axios: AxiosInstance, store: Store<IRootState>, messag
                 })
                 .then(async () => {
                   await store.dispatch('user/ResetToken')
-                  location.reload() // To prevent bugs from vue-router
+                  location.reload()
                 })
             }
             break
@@ -230,30 +230,21 @@ function routerInterceptor(router: VueRouter, store: Store<IRootState>, process:
     if (process) {
       process.start()
     }
-    // Determine whether the user has logged in
     if (store.state.user.token) {
       if (to.path === '/login') {
-        // If is logged in, redirect to the home page
         next({ path: '/' })
         if (process) {
           process.done()
         }
       } else {
-        // Check whether the user has obtained his permission roles
         if (store.state.user.roles.length === 0) {
           try {
-            // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
             await store.dispatch('user/GetUserInfo')
             const roles = store.state.user.roles
-            // Generate accessible routes map based on role
             await store.dispatch('permission/GenerateRoutes', roles)
-            // Dynamically add accessible routes
             router.addRoutes(store.state.permission.dynamic)
-            // Hack: ensure addRoutes is complete
-            // Set the replace: true, so the navigation will not leave a history record
             next({ ...to, replace: true })
           } catch (err) {
-            // Remove token and redirect to login page
             await store.dispatch('user/ResetToken')
             if (message) {
               // tslint:disable-next-line: no-floating-promises
@@ -269,12 +260,9 @@ function routerInterceptor(router: VueRouter, store: Store<IRootState>, process:
         }
       }
     } else {
-      // Has no token
       if (to.meta && to.meta.white) {
-        // In the free login whitelist, go directly
         next()
       } else {
-        // Other pages that do not have permission to access are redirected to the login page.
         next(`/login?redirect=${to.path}`)
         if (process) {
           process.done()
