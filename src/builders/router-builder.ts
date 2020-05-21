@@ -11,6 +11,12 @@ export class RouterBuilder {
     this.context = context
     this.mappings.set('401', { path: '/401', component: ui.Page401, meta: { hidden: true, white: true } })
     this.mappings.set('404', { path: '/404', component: ui.Page404, meta: { hidden: true, white: true } })
+    this.mappings.set('redirect', {
+      path: '/redirect',
+      component: Layout,
+      meta: { hidden: true },
+      children: [{ path: '/redirect/:path(.*)', component: ui.Redirect }]
+    })
   }
 
   public home(component: Component, option?: { redirect?: string; meta?: any }): RouterBuilder {
