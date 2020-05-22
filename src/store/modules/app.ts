@@ -8,6 +8,7 @@ export interface IAppState {
     opened: boolean
     withoutAnimation: boolean
   }
+  host: string
   size: string
   title: string
   logo: string
@@ -22,14 +23,19 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
     withoutAnimation: false
   }
 
-  public device = DeviceType.Desktop
-  public size = 'mini'
-  public title = ''
-  public logo = ''
-  public language = 'zh'
+  public device: DeviceType = DeviceType.Desktop
+  public host: string = ''
+  public size: string = 'mini'
+  public title: string = ''
+  public logo: string = ''
+  public language: string = 'zh'
 
   public get Sidebar() {
     return this.sidebar
+  }
+
+  public get Host(): string {
+    return this.host
   }
 
   public get Size(): string {

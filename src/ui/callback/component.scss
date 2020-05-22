@@ -1,0 +1,18 @@
+.social-signup-callback {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: $loginBg;
+  display: flex; //flex布局
+  justify-content: center; //x轴排列
+  align-items: center; //y轴排列
+
+  .tips {
+    font-size: 36px;
+    color: #fff;
+    margin: 0 auto;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+  }
+}

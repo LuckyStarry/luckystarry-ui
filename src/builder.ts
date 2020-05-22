@@ -27,6 +27,7 @@ export class Builder {
   private _message_box!: ui.MessageBox
   private _context: Context
   private _title!: string
+  private _host!: string
   private _logo!: string
   private _axios!: AxiosInstance
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
@@ -88,6 +89,11 @@ export class Builder {
     return this
   }
 
+  public host(host: string): Builder {
+    this._host = host
+    return this
+  }
+
   public axios(axios: AxiosInstance) {
     this._axios = axios
   }
@@ -124,6 +130,9 @@ export class Builder {
     }
     if (this._logo) {
       store.state.app.logo = this._logo
+    }
+    if (this._host) {
+      store.state.app.host = this._host
     }
 
     axiosInterceptor(this._axios, store, this._message, this._message_box)

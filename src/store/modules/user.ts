@@ -104,7 +104,7 @@ export class User extends VuexModule<IUserState, IRootState> implements IUserSta
     if (this.token === '') {
       throw Error('GetUserInfo: token is undefined!')
     }
-    let response = await this.context.rootState.context.apis.getProfile()
+    let response = await this.context.rootState.context.apis.profile()
     if (!response) {
       throw Error('Verification failed, please Login again.')
     }

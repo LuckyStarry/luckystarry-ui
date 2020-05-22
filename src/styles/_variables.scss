@@ -17,7 +17,7 @@ $subMenuHover: #001528;
 $subMenuActiveText: #f4f4f5;
 $menuBg: #304156;
 $menuText: #bfcbd9;
-$menuActiveText: #409eff; // Also see settings.sidebarTextTheme
+$menuActiveText: #409eff;
 
 // Login page
 $lightGray: #eee;
@@ -25,8 +25,6 @@ $darkGray: #889aa4;
 $loginBg: #2d3a4b;
 $loginCursorColor: #fff;
 
-// The :export directive is the magic sauce for webpack
-// https://mattferderer.com/use-sass-variables-in-typescript-and-javascript
 :export {
   menuBg: $menuBg;
   menuText: $menuText;

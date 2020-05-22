@@ -1,0 +1,80 @@
+.login-container {
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+  }
+}
+
+.login-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: $loginBg;
+
+  .login-form {
+    position: relative;
+    width: 520px;
+    max-width: 100%;
+    padding: 160px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .tips {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .svg-container {
+    padding: 6px 5px 6px 15px;
+    color: $darkGray;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+  }
+
+  .title-container {
+    position: relative;
+
+    .title {
+      font-size: 26px;
+      color: $lightGray;
+      margin: 0px auto 40px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .set-language {
+      color: #fff;
+      position: absolute;
+      top: 3px;
+      font-size: 18px;
+      right: 0px;
+      cursor: pointer;
+    }
+  }
+
+  .thirdparty-button {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+  }
+
+  @media only screen and (max-width: 470px) {
+    .thirdparty-button {
+      display: none;
+    }
+  }
+}
+
+.dialog-thirdparty {
+  .login-tips {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+}
