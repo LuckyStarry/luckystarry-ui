@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="page-404">
     <span
       class="particle"
       v-for="item in particles(4)"

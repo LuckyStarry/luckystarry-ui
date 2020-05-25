@@ -1,13 +1,4 @@
-body {
-  margin: 0;
-  font-size: 20px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.container {
+.page-404 {
   position: relative;
   display: flex;
   align-items: center;
@@ -17,47 +8,50 @@ body {
   color: black;
   font-family: arial, sans-serif;
   overflow: hidden;
-}
 
-.content {
-  position: relative;
-  width: 600px;
-  max-width: 100%;
-  margin: 20px;
-  background: white;
-  padding: 60px 40px;
-  text-align: center;
-  box-shadow: -10px 10px 67px -12px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  animation: apparition 0.8s 1.2s cubic-bezier(0.39, 0.575, 0.28, 0.995) forwards;
-}
-.content p {
-  font-size: 1.3rem;
-  margin-top: 0;
-  margin-bottom: 0.6rem;
-  letter-spacing: 0.1rem;
-  color: #595959;
-}
-.content p:last-child {
-  margin-bottom: 0;
-}
-.content button {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 0.5rem 1rem;
-  border: 3px solid #595959;
-  background: transparent;
-  font-size: 1rem;
-  color: #595959;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
-}
+  .content {
+    position: relative;
+    width: 600px;
+    max-width: 100%;
+    margin: 20px;
+    background: white;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: -10px 10px 67px -12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    animation: apparition 0.8s 1.2s cubic-bezier(0.39, 0.575, 0.28, 0.995) forwards;
+  }
 
-.particle {
-  position: absolute;
-  display: block;
-  pointer-events: none;
+  .content p {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.1rem;
+    color: #595959;
+  }
+
+  .content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .content button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: 3px solid #595959;
+    background: transparent;
+    font-size: 1rem;
+    color: #595959;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .particle {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+  }
 }
 
 @keyframes apparition {
@@ -65,43 +59,56 @@ body {
     opacity: 0;
     transform: translateY(100px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(180px);
   }
 }
+
 @keyframes floatReverse {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-180px);
   }
 }
+
 @keyframes float2 {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(28px);
   }
 }
+
 @keyframes floatReverse2 {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-28px);
   }
