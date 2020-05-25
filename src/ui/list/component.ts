@@ -8,6 +8,8 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
   public criteria!: TCriteria
   @Prop({ type: Function, required: true })
   public searchApi!: (criteria: TCriteria) => Promise<Response<SearchResult<TEntity>>>
+  @Prop({ type: Function, default: (item: TEntity) => item })
+  public decorate!: (item: TEntity) => any
 
   public list: TEntity[] = []
   public count: number = 0
@@ -31,6 +33,13 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
     } finally {
       this.loading = false
     }
+  }
+
+  public get decorated(): any[] {
+    if (this.list && this.list.length) {
+      return this.list.map(this.decorate)
+    }
+    return this.list
   }
 
   public async mounted() {

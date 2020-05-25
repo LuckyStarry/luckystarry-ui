@@ -8,7 +8,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="list" border fit highlight-current-row>
+    <el-table :data="decorated" border fit highlight-current-row>
       <slot name="columns" />
     </el-table>
     <pagination v-show="count > 0" :total="count" :page.sync="criteria.index" :limit.sync="criteria.size" @pagination="search" />
