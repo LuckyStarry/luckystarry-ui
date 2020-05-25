@@ -94,8 +94,9 @@ export class Builder {
     return this
   }
 
-  public axios(axios: AxiosInstance) {
+  public axios(axios: AxiosInstance): Builder {
     this._axios = axios
+    return this
   }
 
   public filters(filters: { [key: string]: Function }): Builder {
