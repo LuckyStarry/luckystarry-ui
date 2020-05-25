@@ -1,8 +1,8 @@
-import { OAuthGenerator } from './oauth-generator'
+import { OAuthClient } from './oauth-client'
 import { OAuthPayload } from './oauth-payload'
 
 export interface OAuth {
-  simple(authorize: string): void
-  install(type: string, generator: OAuthGenerator | ((payload: OAuthPayload) => Promise<string>)): void
+  install(type: string, client: OAuthClient): void
   authorize(type: string, payload: OAuthPayload): Promise<string>
+  callback(type: string, payload: OAuthPayload): Promise<string>
 }
