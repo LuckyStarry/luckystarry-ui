@@ -11,7 +11,11 @@ export class Premission implements DirectiveOptions {
 
   public inserted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding
-    const roles = this.store.state.user.roles || []
+    let roles: string[] = []
+    let def: Premission = (binding as any).def
+    if (def) {
+      roles = def.store.state.user.roles || []
+    }
     if (value && value instanceof Array && value.length > 0) {
       const permissionRoles = value
       const hasPermission = roles.some(role => {

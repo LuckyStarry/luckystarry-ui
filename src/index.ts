@@ -2,6 +2,7 @@ import { App } from './app'
 import { Builder } from './builder'
 import * as components from './components'
 import { Context } from './context'
+import * as interceptors from './interceptors'
 import { AppMain, Layout } from './layout'
 import * as mixins from './mixins'
 import * as models from './models'
@@ -20,6 +21,7 @@ export { models }
 export { store }
 export { utils }
 export { ui }
+export { interceptors }
 const _components = { App, Layout, AppMain }
 const install = function(Vue: any, opts?: any) {
   if ((install as any).installed) return
