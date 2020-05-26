@@ -5,13 +5,13 @@ import { IUserState } from '../store/modules'
 export class User extends Vue {
   public get profile(): IUserState {
     return {
-      id: this.$store.state['user/ID'],
-      token: this.$store.state['user/Token'],
-      name: this.$store.state['user/Name'],
-      avatar: this.$store.state['user/Avatar'],
-      introduction: this.$store.state['user/Introduction'],
-      email: this.$store.state['user/Email'],
-      roles: this.$store.state['user/Roles'] || []
+      id: this.$store.getters['user/ID'],
+      token: this.$store.getters['user/Token'],
+      name: this.$store.getters['user/Name'],
+      avatar: this.$store.getters['user/Avatar'],
+      introduction: this.$store.getters['user/Introduction'],
+      email: this.$store.getters['user/Email'],
+      roles: this.$store.getters['user/Roles'] || []
     }
   }
 }
