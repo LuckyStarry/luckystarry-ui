@@ -1,9 +1,8 @@
 import { AxiosInstance } from 'axios'
 import ElementUI from 'element-ui'
-import { v4 as uuid } from 'uuid'
 import Vue, { DirectiveOptions, VueConstructor } from 'vue'
 import VueI18n, { LocaleMessageObject, LocaleMessages } from 'vue-i18n'
-import VueRouter, { Route } from 'vue-router'
+import VueRouter from 'vue-router'
 import VueIcon from 'vue-svgicon'
 import { Store } from 'vuex'
 import { App } from './app'
@@ -12,6 +11,7 @@ import { Context } from './context'
 import { ElDraggableDialog, Premission, Waves } from './directives'
 import * as filters from './filters'
 import './icons/components'
+import * as interceptors from './interceptors'
 import * as lang from './lang'
 import { IRootState } from './store'
 import { helper, ui } from './utils'
@@ -32,6 +32,10 @@ export class Builder {
   private _axios!: AxiosInstance
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
   private _messages: LocaleMessages = { zh: lang.zh }
+  // tslint:disable-next-line: variable-name
+  private _axios_interceptor!: interceptors.AxiosInterceptor
+  // tslint:disable-next-line: variable-name
+  private _route_interceptor!: interceptors.RouteInterceptor
 
   public constructor(context?: Context) {
     this._context = context || new Context()
@@ -39,6 +43,8 @@ export class Builder {
     this.message(new helper.MessageHelper())
     this.messagebox(new helper.MessageBoxHelper())
     this.process(new helper.ProcessHelper())
+    this.interceptor(new interceptors.AxiosInterceptor())
+    this.interceptor(new interceptors.RouteInterceptor())
   }
 
   public static create(context?: Context): Builder {
@@ -94,8 +100,20 @@ export class Builder {
     return this
   }
 
-  public axios(axios: AxiosInstance): Builder {
+  public axios(axios: AxiosInstance, interceptor?: interceptors.AxiosInterceptor): Builder {
     this._axios = axios
+    if (interceptor) {
+      this._axios_interceptor = interceptor
+    }
+    return this
+  }
+
+  public interceptor(interceptor: interceptors.AxiosInterceptor | interceptors.RouteInterceptor): Builder {
+    if (interceptor instanceof interceptors.AxiosInterceptor) {
+      this._axios_interceptor = interceptor
+    } else {
+      this._route_interceptor = interceptor
+    }
     return this
   }
 
@@ -136,9 +154,17 @@ export class Builder {
       store.state.app.host = this._host
     }
 
-    axiosInterceptor(this._axios, store, this._message, this._message_box)
-    routerInterceptor(router, store, this._process, this._message)
+    if (this._axios) {
+      let interceptor = this._axios_interceptor || new interceptors.AxiosInterceptor()
+      interceptor.intercept({ message: this._message, messagebox: this._message_box, store, axios: this._axios })
+    }
 
+    {
+      let interceptor = this._route_interceptor || new interceptors.RouteInterceptor()
+      interceptor.intercept({ message: this._message, process: this._process, store, router: this._routers })
+    }
+
+    Vue.use(VueRouter)
     Vue.use(VueI18n)
     Vue.use(ElementUI, { size: store.state.app.size })
     Vue.use(VueIcon, { tagName: 'svg-icon', defaultWidth: '1em', defaultHeight: '1em' })
@@ -165,138 +191,6 @@ export class Builder {
       ...this._payload,
       render: h => h(this._app)
     })
-    app.$mount('#app')
     return app
   }
-}
-
-function axiosInterceptor(axios: AxiosInstance, store: Store<IRootState>, message: ui.Message, messagebox: ui.MessageBox) {
-  if (!axios) {
-    return
-  }
-  axios.interceptors.request.use(
-    config => {
-      if (store.state.user.token) {
-        config.headers['Authorization'] = `Berear ${store.state.user.token}`
-        config.headers['X-Access-Token'] = store.state.user.token
-      }
-      config.headers['X-Ca-Nonce'] = uuid()
-      return config
-    },
-    error => {
-      // tslint:disable-next-line: no-floating-promises
-      Promise.reject(error)
-    }
-  )
-
-  axios.interceptors.response.use(
-    response => {
-      if (response.status !== 200) {
-        switch (response.status) {
-          case 401:
-            if (messagebox) {
-              // tslint:disable-next-line: no-floating-promises
-              messagebox
-                .confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-                  confirmButtonText: '重新登录',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                })
-                .then(async () => {
-                  await store.dispatch('user/ResetToken')
-                  location.reload()
-                })
-            }
-            break
-          case 403:
-            if (messagebox) {
-              // tslint:disable-next-line: no-floating-promises
-              messagebox.alert('您的权限不足', '权限不足', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              })
-            }
-            break
-        }
-      } else {
-        let res = response.data
-        if (!res.Success) {
-          if (message) {
-            // tslint:disable-next-line: no-floating-promises
-            message.error(res.Message || 'Error')
-          }
-          return Promise.reject(response.data)
-        } else {
-          if (res.Message) {
-            if (message) {
-              // tslint:disable-next-line: no-floating-promises
-              message.success(res.Message)
-            }
-          }
-          return response.data
-        }
-      }
-    },
-    error => {
-      if (message) {
-        // tslint:disable-next-line: no-floating-promises
-        message.error(error.message || 'Error')
-        return Promise.reject(error)
-      }
-    }
-  )
-}
-
-function routerInterceptor(router: VueRouter, store: Store<IRootState>, process: ui.Process, message: ui.Message) {
-  router.beforeEach(async (to: Route, _: Route, next: any) => {
-    if (process) {
-      process.start()
-    }
-    if (store.state.user.token) {
-      if (to.path === '/login') {
-        next({ path: '/' })
-        if (process) {
-          process.done()
-        }
-      } else {
-        if (store.state.user.roles.length === 0) {
-          try {
-            await store.dispatch('user/GetUserInfo')
-            const roles = store.state.user.roles
-            await store.dispatch('permission/GenerateRoutes', roles)
-            router.addRoutes(store.state.permission.dynamic)
-            next({ ...to, replace: true })
-          } catch (err) {
-            await store.dispatch('user/ResetToken')
-            if (message) {
-              // tslint:disable-next-line: no-floating-promises
-              message.error(err || 'Has Error')
-            }
-            next(`/login?redirect=${to.path}`)
-            if (process) {
-              process.done()
-            }
-          }
-        } else {
-          next()
-        }
-      }
-    } else {
-      if (to.meta && to.meta.white) {
-        next()
-      } else {
-        next(`/login?redirect=${to.path}`)
-        if (process) {
-          process.done()
-        }
-      }
-    }
-  })
-
-  router.afterEach((to: Route) => {
-    if (process) {
-      process.done()
-    }
-  })
 }
