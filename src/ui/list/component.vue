@@ -1,5 +1,5 @@
 <template>
-  <div class="luckystarry-list">
+  <div class="luckystarry-list" v-loading="loading">
     <div class="filter-container">
       <el-form inline @submit.native.prevent>
         <slot name="criteria" :search="search" :loading="loading" />
