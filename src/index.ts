@@ -43,9 +43,14 @@ export default { App, AppMain, Builder, Context, Layout, components, mixins, mod
 declare global {
   interface Date {
     toSmartString(): string
+    toDate(): Date
   }
 }
 
 Date.prototype.toSmartString = function() {
   return utils.times.utils.toSmartString(this)
+}
+
+Date.prototype.toDate = function() {
+  return new Date(Math.floor(this.getTime() / 86400000) * 86400000)
 }
