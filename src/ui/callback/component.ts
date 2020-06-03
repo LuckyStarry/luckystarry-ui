@@ -17,6 +17,10 @@ export default class extends Vue {
     if (!uri) {
       uri = this.host
     }
-    window.location.replace(uri)
+    if (uri.toLowerCase().startsWith('http')) {
+      window.location.replace(uri)
+    } else {
+      await this.$router.replace(uri)
+    }
   }
 }
