@@ -15,7 +15,9 @@ export default {
     logIn: '登录',
     thirdparty: '第三方登录',
     tips: '为了保证数据安全，目前只支持第三方登陆方式进入系统。',
-    ['reading-callback']: '正在读取登陆信息，请稍候……'
+    ['reading-callback']: '正在读取登陆信息，请稍候……',
+    ['reading-error']: '登陆出错，请重新尝试。',
+    ['back-to-home']: '返回首页'
   },
   settings: {
     title: '系统布局配置',

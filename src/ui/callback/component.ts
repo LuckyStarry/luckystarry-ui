@@ -6,21 +6,30 @@ import { Context } from '../../contexts'
 export default class extends Vue {
   @Getter('app/Host')
   public host!: string
-
   @Prop({ type: String, default: 'simple' })
   public oauthType!: string
+
+  public hasError: boolean = false
 
   public async mounted() {
     let context: Context = this.$store.state.context
     let payload = { host: this.host, path: this.$route.path, query: this.$route.query, params: this.$route.params, hash: this.$route.hash }
-    let uri = await context.oauth.callback(this.oauthType, payload)
-    if (!uri) {
-      uri = this.host
+    try {
+      let uri = await context.oauth.callback(this.oauthType, payload)
+      if (!uri) {
+        uri = this.host
+      }
+      if (uri.toLowerCase().startsWith('http')) {
+        window.location.replace(uri)
+      } else {
+        await this.$router.replace(uri)
+      }
+    } catch (e) {
+      this.hasError = true
     }
-    if (uri.toLowerCase().startsWith('http')) {
-      window.location.replace(uri)
-    } else {
-      await this.$router.replace(uri)
-    }
+  }
+
+  public async backToHome() {
+    await this.$router.replace(`/`)
   }
 }
