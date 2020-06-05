@@ -1,13 +1,13 @@
 <template>
   <div class="luckystarry-list" v-loading="loading">
-    <div class="filter-container">
-      <el-form inline @submit.native.prevent>
+    <el-card class="filter-container" shadow="hover">
+      <el-form class="filter-form" inline @submit.native.prevent>
         <slot name="criteria" :search="search" :loading="loading" />
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="search">{{ $t('common.filter.search') }}</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </el-card>
     <el-table :data="decorated" border fit highlight-current-row>
       <slot name="columns" />
     </el-table>

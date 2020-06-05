@@ -1,4 +1,16 @@
 .luckystarry-list {
+    padding: 20px;
+
+    .filter-container {
+        margin-bottom: 10px;
+
+        .filter-form {
+            .el-form-item {
+                margin-bottom: 0;
+            }
+        }
+    }
+
     .pagination-container {
         text-align: right;
     }
