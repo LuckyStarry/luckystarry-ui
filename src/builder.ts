@@ -51,7 +51,10 @@ export class Builder {
     return new Builder(context)
   }
 
-  public router(config: (bd: builders.RouterBuilder) => void): Builder {
+  public router(config: (bd: builders.RouterBuilder) => void, baseURL?: string): Builder {
+    if (baseURL) {
+      this._context.routes.baseURL = baseURL
+    }
     let builder = new builders.RouterBuilder(this._context)
     config(builder)
     this._routers = builder.build()

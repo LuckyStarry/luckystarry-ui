@@ -33,7 +33,7 @@ export class RouterBuilder {
     return this
   }
 
-  public login(component: Component, path: string = '/login') {
+  public login(component: Component, path: string = '/login'): RouterBuilder {
     this.mappings.set('login', {
       path,
       component,
@@ -42,7 +42,7 @@ export class RouterBuilder {
     return this
   }
 
-  public callback(component: Component, path: string = '/oauth/callback') {
+  public callback(component: Component, path: string = '/oauth/callback'): RouterBuilder {
     this.mappings.set('callback', {
       path,
       component,
@@ -51,7 +51,7 @@ export class RouterBuilder {
     return this
   }
 
-  public 401(component: Component) {
+  public 401(component: Component): RouterBuilder {
     this.mappings.set('401', {
       path: '/401',
       component,
@@ -60,7 +60,7 @@ export class RouterBuilder {
     return this
   }
 
-  public 404(component: Component) {
+  public 404(component: Component): RouterBuilder {
     this.mappings.set('404', {
       path: '/404',
       component,
