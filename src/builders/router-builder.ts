@@ -9,6 +9,11 @@ export class RouterBuilder {
   private context: Context
   public constructor(context: Context) {
     this.context = context
+    this.mappings.set('home', {
+      path: '/',
+      component: Layout,
+      children: [{ path: 'dashboard', name: 'Dashboard', component: ui.Dashboard, meta: { title: 'dashboard', icon: 'dashboard', affix: true, white: true } }]
+    })
     this.mappings.set('401', { path: '/401', component: ui.Page401, meta: { hidden: true, white: true } })
     this.mappings.set('404', { path: '/404', component: ui.Page404, meta: { hidden: true, white: true } })
     this.mappings.set('login', { path: '/login', component: ui.Login, meta: { hidden: true, white: true } })

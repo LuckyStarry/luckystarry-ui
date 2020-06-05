@@ -1,0 +1,27 @@
+.dashboard-container {
+  display: flex;
+  align-items: center;
+
+  .title {
+    display: block;
+    text-align: center;
+    margin: 0;
+    line-height: 50px;
+    height: 50px;
+    width: 100%;
+  }
+}
+
+.app-main {
+  .dashboard-container {
+    min-height: calc(100vh - 50px);
+  }
+}
+
+.hasTagsView {
+  .app-main {
+    .dashboard-container {
+      min-height: calc(100vh - 84px);
+    }
+  }
+}

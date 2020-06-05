@@ -1,4 +1,5 @@
 export { Callback } from './callback'
+export { Dashboard } from './dashboard'
 export { List } from './list'
 export { Login } from './login'
 export { Page401 } from './page-401'
