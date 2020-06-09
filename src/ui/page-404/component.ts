@@ -27,6 +27,10 @@ export default class Page404 extends Vue {
     }
     return list
   }
+
+  public async backToHome() {
+    await this.$router.replace(`/`)
+  }
 }
 
 const animations = ['float', 'floatReverse', 'float2', 'floatReverse2']
