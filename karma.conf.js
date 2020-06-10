@@ -1,4 +1,5 @@
-const webpackConfig = require('./webpack.config.js')
+const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = function(config) {
   config.set({
@@ -7,8 +8,52 @@ module.exports = function(config) {
     preprocessors: {
       '**/*.spec.ts': ['webpack', 'sourcemap']
     },
-    webpack: webpackConfig,
-    reporters: ['spec'],
-    browsers: ['PhantomJS']
+    webpack: {
+      mode: 'development',
+      output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'lib')
+      },
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+          },
+          {
+            test: /\.ts(x?)$/,
+            exclude: /node_modules/,
+            use: ['babel-loader', 'ts-loader']
+          },
+          {
+            test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+            loader: 'url-loader?limit=8192'
+          },
+          {
+            test: /\.(sa|sc)ss$/,
+            use: ['css-loader', 'sass-loader']
+          },
+          {
+            test: /\.css$/,
+            use: ['css-loader', 'sass-loader']
+          },
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          }
+        ]
+      },
+      resolve: {
+        extensions: ['.ts', '.js', '.vue']
+      },
+      plugins: [new VueLoaderPlugin()]
+    },
+    browsers: ['Chrome'],
+    reporters: ['spec', 'coverage'],
+    coverageReporter: {
+      dir: './coverage',
+      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
+    }
   })
 }

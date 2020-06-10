@@ -8,9 +8,14 @@
     "lint": "tslint -p . -c tslint.json 'src/**/*.ts'",
     "prebuild": "npm run clean && npm run svg && npm run lint",
     "build": "webpack --mode production --config webpack.config.js",
+    "pretest": "del-cli .nyc_output coverage -f",
     "test": "cross-env BABEL_ENV=test karma start --single-run",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
     "x": "npm i --registry https://registry.npm.taobao.org"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
   },
   "repository": {
     "type": "git",
@@ -46,7 +51,9 @@
     "vuex-module-decorators": "^0.17.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-runtime": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
     "@types/chai": "^4.2.11",
     "@types/js-cookie": "^2.2.6",
     "@types/mocha": "^7.0.2",
@@ -54,6 +61,7 @@
     "@types/uuid": "^7.0.3",
     "@vue/test-utils": "^1.0.3",
     "babel-loader": "^8.1.0",
+    "babel-plugin-istanbul": "^6.0.0",
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",

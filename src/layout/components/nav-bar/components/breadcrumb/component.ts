@@ -1,4 +1,4 @@
-import pathToRegexp from 'path-to-regexp'
+import { compile } from 'path-to-regexp'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Route, RouteRecord } from 'vue-router'
 
@@ -20,14 +20,10 @@ export default class Breadcrumb extends Vue {
   }
 
   private getBreadcrumb() {
-    let matched = this.$route.matched.filter(
-      item => item.meta && item.meta.title
-    )
+    let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
     const first = matched[0]
     if (!this.isDashboard(first)) {
-      matched = [
-        { path: '/dashboard', meta: { title: 'dashboard' } } as RouteRecord
-      ].concat(matched)
+      matched = [{ path: '/dashboard', meta: { title: 'dashboard' } } as RouteRecord].concat(matched)
     }
     this.breadcrumbs = matched.filter(item => {
       return item.meta && item.meta.title && item.meta.breadcrumb !== false
@@ -45,7 +41,7 @@ export default class Breadcrumb extends Vue {
   private pathCompile(path: string) {
     // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
     const { params } = this.$route
-    const toPath = pathToRegexp.compile(path)
+    const toPath = compile(path)
     return toPath(params)
   }
 
