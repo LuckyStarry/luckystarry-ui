@@ -49,11 +49,11 @@ module.exports = function(config) {
       },
       plugins: [new VueLoaderPlugin()]
     },
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     reporters: ['spec', 'coverage'],
     coverageReporter: {
       dir: './coverage',
-      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
+      reporters: [{ type: 'lcovonly' }, { type: 'text-summary' }]
     }
   })
 }
