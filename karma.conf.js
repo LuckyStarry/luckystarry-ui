@@ -50,7 +50,7 @@ module.exports = function(config) {
       plugins: [new VueLoaderPlugin()]
     },
     browsers: ['ChromeHeadless'],
-    reporters: ['spec', 'coverage'],
+    reporters: ['spec', 'coverage', 'coveralls'],
     coverageReporter: {
       dir: './coverage',
       reporters: [{ type: 'lcovonly' }, { type: 'text-summary' }]

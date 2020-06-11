@@ -10,7 +10,6 @@
     "build": "webpack --mode production --config webpack.config.js",
     "pretest": "del-cli .nyc_output coverage -f",
     "test": "cross-env BABEL_ENV=test karma start --single-run",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
     "x": "npm i --registry https://registry.npm.taobao.org"
   },
@@ -72,6 +71,7 @@
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
+    "karma-coveralls": "^2.1.0",
     "karma-mocha": "^2.0.1",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.32",
