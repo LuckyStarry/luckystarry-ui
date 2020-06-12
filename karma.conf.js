@@ -60,7 +60,7 @@ module.exports = function(config) {
       plugins: [new VueLoaderPlugin()]
     },
     browsers: ['ChromeHeadless'],
-    reporters: ['coverage-istanbul'],
+    reporters: ['coverage-istanbul', 'coveralls'],
     coverageIstanbulReporter: {
       dir: './coverage',
       reports: ['html', 'lcovonly', 'text-summary'],
