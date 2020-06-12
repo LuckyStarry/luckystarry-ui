@@ -13,7 +13,7 @@ jobs:
         - node --version
         - npm --version
         - echo "Testing Started ..."
-        - npm test
+        - npm test:coveralls
         - echo "Testing Finished."
       after_success:
         - npm run coverage

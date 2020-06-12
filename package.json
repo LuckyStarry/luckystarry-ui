@@ -9,7 +9,9 @@
     "prebuild": "npm run clean && npm run svg && npm run lint",
     "build": "webpack --mode production --config webpack.config.js",
     "pretest": "del-cli .nyc_output coverage -f",
-    "test": "cross-env BABEL_ENV=test karma start --single-run",
+    "pretest:coveralls": "npm run pretest",
+    "test:coveralls": "cross-env BABEL_ENV=test karma start karma.conf.coveralls.js --single-run",
+    "test": "cross-env BABEL_ENV=test karma start karma.conf.js --single-run",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
     "x": "npm i --registry https://registry.npm.taobao.org"
   },
