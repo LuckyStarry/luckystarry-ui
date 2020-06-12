@@ -5,8 +5,9 @@ module.exports = function(config) {
   config.set({
     frameworks: ['mocha'],
     files: ['test/**/*.spec.ts'],
+    exclude: ['*.vue'],
     preprocessors: {
-      '**/*.spec.ts': ['webpack', 'sourcemap']
+      '**/*.spec.ts': ['webpack']
     },
     webpack: {
       mode: 'development',
@@ -17,9 +18,18 @@ module.exports = function(config) {
       module: {
         rules: [
           {
+            test: /\.[t|j]s(x?)$/,
+            use: {
+              loader: 'istanbul-instrumenter-loader',
+              options: { esModules: true }
+            },
+            enforce: 'post',
+            exclude: [/node_modules/, /\.spec\.ts$/, /component\.ts/]
+          },
+          {
             test: /\.js$/,
             exclude: /node_modules/,
-            loader: 'babel-loader'
+            loader: ['babel-loader']
           },
           {
             test: /\.ts(x?)$/,
@@ -50,10 +60,13 @@ module.exports = function(config) {
       plugins: [new VueLoaderPlugin()]
     },
     browsers: ['ChromeHeadless'],
-    reporters: ['spec', 'coverage', 'coveralls'],
-    coverageReporter: {
+    reporters: ['coverage-istanbul'],
+    coverageIstanbulReporter: {
       dir: './coverage',
-      reporters: [{ type: 'lcovonly' }, { type: 'text-summary' }]
+      reports: ['html', 'lcovonly', 'text-summary'],
+      includeAllSources: true,
+      fixWebpackSourcePaths: true,
+      skipFilesWithNoCoverage: false
     }
   })
 }
