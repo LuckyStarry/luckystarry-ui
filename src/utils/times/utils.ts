@@ -29,14 +29,15 @@ export function toSmartString(time: number | Date): string {
   return `${desc}${suffix}`
 }
 
-export const parseTime = (time?: object | string | number, cFormat?: string): string | null => {
-  if (time === undefined) {
+export const parseTime = (time?: Date | string | number, cFormat?: string): string | null => {
+  // tslint:disable-next-line: strict-type-predicates
+  if (time === undefined || time === null) {
     return null
   }
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date: Date
-  if (typeof time === 'object') {
-    date = time as Date
+  if (time instanceof Date) {
+    date = time
   } else {
     if (typeof time === 'string' && /^[0-9]+$/.test(time)) {
       time = parseInt(time, 10)

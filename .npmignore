@@ -2,5 +2,6 @@
 .nyc_output
 .vscode
 node_modules
+coverage
 .travis.yml
 package-lock.json
