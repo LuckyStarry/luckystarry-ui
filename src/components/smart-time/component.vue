@@ -1,8 +1,8 @@
 <template>
-  <el-tooltip :content="value|timestamp">
+  <el-tooltip :content="value | timestamp">
     <span>
       <i class="far fa-clock"></i>
-      {{value|smarttime}}
+      {{ value | smarttime }}
     </span>
   </el-tooltip>
 </template>

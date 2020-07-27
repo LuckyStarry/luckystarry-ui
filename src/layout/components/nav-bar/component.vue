@@ -1,14 +1,9 @@
 <template>
   <div class="navbar">
-    <hamburger
-      id="hamburger-container"
-      :is-active="sidebar.opened"
-      class="hamburger-container"
-      @toggleClick="toggleSideBar"
-    />
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <template v-if="device !== 'mobile'">
         <header-search class="right-menu-item" />
         <error-log class="errLog-container right-menu-item hover-effect" />
         <screenfull class="right-menu-item hover-effect" />
@@ -22,10 +17,7 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item
-            disabled
-            :title="$t('common.system.not-implement')"
-          >{{ $t('navbar.profile') }}</el-dropdown-item>
+          <el-dropdown-item disabled :title="$t('common.system.not-implement')">{{ $t('navbar.profile') }}</el-dropdown-item>
           <router-link to="/">
             <el-dropdown-item>{{ $t('navbar.dashboard') }}</el-dropdown-item>
           </router-link>
@@ -38,4 +30,4 @@
   </div>
 </template>
 <script lang="ts" src="./component.ts" />
-<style lang="scss" src="./component.scss"/>
+<style lang="scss" src="./component.scss" />

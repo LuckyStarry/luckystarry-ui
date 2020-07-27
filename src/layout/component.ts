@@ -3,14 +3,7 @@ import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Resize } from '../mixins'
 import { DeviceType } from '../store'
-import {
-  AppMain,
-  NavBar,
-  RightPanel,
-  Settings,
-  SideBar,
-  TagsView
-} from './components'
+import { AppMain, NavBar, RightPanel, Settings, SideBar, TagsView } from './components'
 
 @Component({
   components: {

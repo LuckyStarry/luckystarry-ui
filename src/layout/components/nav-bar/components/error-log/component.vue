@@ -1,10 +1,6 @@
 <template>
-  <div v-if="errorLogs.length>0">
-    <el-badge
-      :is-dot="true"
-      style="line-height: 25px; margin-top: -5px;"
-      @click.native="dialogTableVisible=true"
-    >
+  <div v-if="errorLogs.length > 0">
+    <el-badge :is-dot="true" style="line-height: 25px; margin-top: -5px;" @click.native="dialogTableVisible = true">
       <el-button style="padding: 8px 10px;" size="small" type="danger">
         <svg-icon name="bug" />
       </el-button>
@@ -16,7 +12,7 @@
       </div>
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
-          <template slot-scope="{row}">
+          <template slot-scope="{ row }">
             <div>
               <span class="message-title">Msg:</span>
               <el-tag type="danger">{{ row.err.message }}</el-tag>

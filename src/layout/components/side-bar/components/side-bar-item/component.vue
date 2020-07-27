@@ -1,23 +1,12 @@
 <template>
-  <div
-    class="side-bar-item"
-    v-if="!item.meta || !item.meta.hidden"
-    :class="[isCollapse ? 'simple-mode' : 'full-mode', {'first-level': isFirstLevel}]"
-  >
+  <div class="side-bar-item" v-if="!item.meta || !item.meta.hidden" :class="[isCollapse ? 'simple-mode' : 'full-mode', { 'first-level': isFirstLevel }]">
     <template v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children">
       <side-bar-item-link v-if="theOnlyOneChild.meta" :to="resolvePath(theOnlyOneChild.path)">
-        <el-menu-item
-          :index="resolvePath(theOnlyOneChild.path)"
-          :class="{'submenu-title-noDropdown': isFirstLevel}"
-        >
-          <svg-icon
-            v-if="showChildrenIcon && theOnlyOneChild.meta.icon"
-            :name="theOnlyOneChild.meta.icon"
-          />
-          <span
-            v-if="(item.meta && item.meta.title) || theOnlyOneChild.meta.title"
-            slot="title"
-          >{{ $t('route.' + ((item.meta && item.meta.title) || theOnlyOneChild.meta.title)) }}</span>
+        <el-menu-item :index="resolvePath(theOnlyOneChild.path)" :class="{ 'submenu-title-noDropdown': isFirstLevel }">
+          <svg-icon v-if="showChildrenIcon && theOnlyOneChild.meta.icon" :name="theOnlyOneChild.meta.icon" />
+          <span v-if="(item.meta && item.meta.title) || theOnlyOneChild.meta.title" slot="title">{{
+            $t('route.' + ((item.meta && item.meta.title) || theOnlyOneChild.meta.title))
+          }}</span>
         </el-menu-item>
       </side-bar-item-link>
     </template>

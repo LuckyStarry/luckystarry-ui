@@ -4,12 +4,7 @@
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
       </div>
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width:100%; margin-bottom:30px;"
-        @click="login"
-      >{{ $t('login.thirdparty') }}</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%; margin-bottom:30px;" @click="login">{{ $t('login.thirdparty') }}</el-button>
       <div style="position:relative">
         <div class="tips">
           <span>{{ $t('login.tips') }}</span>

@@ -96,10 +96,7 @@ export default class TagsView extends Vue {
           panel.moveToTarget(tag)
           // When query is different then update
           if ((tag.to as ITagView).fullPath !== this.$route.fullPath) {
-            await this.$store.dispatch(
-              'tagsView/updateVisitedView',
-              this.$route
-            )
+            await this.$store.dispatch('tagsView/updateVisitedView', this.$route)
           }
           break
         }

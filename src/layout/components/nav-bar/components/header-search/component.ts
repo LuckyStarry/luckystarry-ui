@@ -41,14 +41,12 @@ export default class HeaderSearch extends Vue {
   private click() {
     this.show = !this.show
     if (this.show) {
-      this.$refs.headerSearchSelect &&
-        (this.$refs.headerSearchSelect as HTMLElement).focus()
+      this.$refs.headerSearchSelect && (this.$refs.headerSearchSelect as HTMLElement).focus()
     }
   }
 
   private close() {
-    this.$refs.headerSearchSelect &&
-      (this.$refs.headerSearchSelect as HTMLElement).blur()
+    this.$refs.headerSearchSelect && (this.$refs.headerSearchSelect as HTMLElement).blur()
     this.options = []
     this.show = false
   }
@@ -85,11 +83,7 @@ export default class HeaderSearch extends Vue {
 
   // Filter out the routes that can be displayed in the sidebar
   // And generate the internationalized title
-  private generateRoutes(
-    routes: RouteConfig[],
-    basePath = '/',
-    prefixTitle: string[] = []
-  ) {
+  private generateRoutes(routes: RouteConfig[], basePath = '/', prefixTitle: string[] = []) {
     let res: RouteConfig[] = []
 
     for (const router of routes) {
@@ -118,11 +112,7 @@ export default class HeaderSearch extends Vue {
 
       // recursive child routes
       if (router.children) {
-        const tempRoutes = this.generateRoutes(
-          router.children,
-          data.path,
-          data.meta.title
-        )
+        const tempRoutes = this.generateRoutes(router.children, data.path, data.meta.title)
         if (tempRoutes.length >= 1) {
           res = [...res, ...tempRoutes]
         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="hamburger" :class="[{'is-active': isActive}]" @click="toggleClick">
+  <div class="hamburger" :class="[{ 'is-active': isActive }]" @click="toggleClick">
     <svg-icon name="hamburger" width="20" height="20" />
   </div>
 </template>

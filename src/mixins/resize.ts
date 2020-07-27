@@ -43,10 +43,7 @@ export class Resize extends Vue {
   private async resizeHandler() {
     if (!document.hidden) {
       const isMobile = this.isMobile()
-      await this.$store.dispatch(
-        'app/ToggleDevice',
-        isMobile ? DeviceType.Mobile : DeviceType.Desktop
-      )
+      await this.$store.dispatch('app/ToggleDevice', isMobile ? DeviceType.Mobile : DeviceType.Desktop)
       if (isMobile) {
         await this.$store.dispatch('app/CloseSideBar', true)
       }

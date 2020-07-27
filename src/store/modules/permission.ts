@@ -4,7 +4,7 @@ import { IRootState } from '..'
 
 const hasPermission = (roles: string[], route: RouteConfig) => {
   if (route.meta && route.meta.roles) {
-    return roles.some((role) => route.meta.roles.includes(role))
+    return roles.some(role => route.meta.roles.includes(role))
   } else {
     return true
   }
@@ -12,7 +12,7 @@ const hasPermission = (roles: string[], route: RouteConfig) => {
 
 export const filterAsyncRoutes = (routes: RouteConfig[], roles: string[]) => {
   const res: RouteConfig[] = []
-  routes.forEach((route) => {
+  routes.forEach(route => {
     const r = { ...route }
     if (hasPermission(roles, r)) {
       if (r.children) {
@@ -30,8 +30,7 @@ export interface IPermissionState {
 }
 
 @Module({ namespaced: true })
-export class Permission extends VuexModule<IPermissionState, IRootState>
-  implements IPermissionState {
+export class Permission extends VuexModule<IPermissionState, IRootState> implements IPermissionState {
   public routes: RouteConfig[] = []
   public dynamic: RouteConfig[] = []
 
@@ -44,10 +43,7 @@ export class Permission extends VuexModule<IPermissionState, IRootState>
   }
 
   @Mutation
-  private SET_ROUTES(payload: {
-    routes: RouteConfig[]
-    constants: RouteConfig[]
-  }) {
+  private SET_ROUTES(payload: { routes: RouteConfig[]; constants: RouteConfig[] }) {
     this.routes = payload.constants.concat(payload.routes)
     this.dynamic = payload.routes
   }
@@ -58,10 +54,7 @@ export class Permission extends VuexModule<IPermissionState, IRootState>
     if (roles.includes('admin')) {
       accessedRoutes = this.context.rootState.context.routes.dynamic
     } else {
-      accessedRoutes = filterAsyncRoutes(
-        this.context.rootState.context.routes.dynamic,
-        roles
-      )
+      accessedRoutes = filterAsyncRoutes(this.context.rootState.context.routes.dynamic, roles)
     }
     this.context.commit('SET_ROUTES', {
       routes: accessedRoutes,

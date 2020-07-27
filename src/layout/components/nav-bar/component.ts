@@ -1,13 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import {
-  Breadcrumb,
-  ErrorLog,
-  Hamburger,
-  HeaderSearch,
-  Screenfull,
-  SizeSelect
-} from './components'
+import { Breadcrumb, ErrorLog, Hamburger, HeaderSearch, Screenfull, SizeSelect } from './components'
 
 @Component({
   components: {

@@ -1,12 +1,5 @@
 import { Context } from '../context'
-import {
-  IAppState,
-  IErrorLogState,
-  IPermissionState,
-  ISettingsState,
-  ITagsViewState,
-  IUserState
-} from './modules'
+import { IAppState, IErrorLogState, IPermissionState, ISettingsState, ITagsViewState, IUserState } from './modules'
 
 export interface IRootState {
   app: IAppState
