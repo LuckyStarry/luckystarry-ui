@@ -8,7 +8,18 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-table :data="decorated" border fit highlight-current-row>
+    <el-table
+      :data="decorated"
+      border
+      fit
+      highlight-current-row
+      @selection-change="selection => $emit('table-selection-change', selection)"
+      @select-all="selection => $emit('table-select-all', selection)"
+      @select="(selection, row) => $emit('table-select', selection, row)"
+      @current-change="(currentRow, oldCurrentRow) => $emit('table-current-change', currentRow, oldCurrentRow)"
+      @sort-change="({ column, prop, order }) => $emit('table-sort-change', { column, prop, order })"
+      @filter-change="filters => $emit('table-filter-change', filters)"
+    >
       <slot name="columns" />
     </el-table>
     <pagination v-show="count > 0" :total="count" :page.sync="criteria.index" :limit.sync="criteria.size" @pagination="search" />
