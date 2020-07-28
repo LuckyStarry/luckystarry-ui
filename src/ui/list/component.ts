@@ -13,9 +13,9 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
   public decorate!: (item: TEntity) => any
   @Prop({ type: Boolean, default: false })
   public showToolbarOnSelect?: boolean
-  @Prop({ type: Function, default: new DefaultResponseAdapter() })
+  @Prop({ type: Object, default: new DefaultResponseAdapter() })
   public responseAdapter?: ResponseAdapter
-  @Prop({ type: Function, default: new DefaultSearchResultAdapter() })
+  @Prop({ type: Object, default: new DefaultSearchResultAdapter() })
   public searchResultAdapter?: SearchResultAdapter
 
   public list: TEntity[] = []
