@@ -9,8 +9,8 @@
         <slot name="criteria-buttons" :search="search" :loading="loading" />
       </el-form>
     </el-card>
-    <el-card class="toobar-container" shadow="hover" v-if="toolbar">
-      <slot name="toobar" :search="search" :loading="loading" />
+    <el-card class="toolbar-container" shadow="hover" v-if="toolbar">
+      <slot name="toolbar" :search="search" :loading="loading" />
     </el-card>
     <el-table
       :data="decorated"
