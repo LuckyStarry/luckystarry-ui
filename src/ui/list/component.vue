@@ -6,6 +6,7 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="search">{{ $t('common.filter.search') }}</el-button>
         </el-form-item>
+        <slot name="criteria-buttons" :search="search" :loading="loading" />
       </el-form>
     </el-card>
     <el-table
@@ -13,7 +14,7 @@
       border
       fit
       highlight-current-row
-      @selection-change="selection => $emit('table-selection-change', selection)"
+      @selection-change="__selectionChange"
       @select-all="selection => $emit('table-select-all', selection)"
       @select="(selection, row) => $emit('table-select', selection, row)"
       @current-change="(currentRow, oldCurrentRow) => $emit('table-current-change', currentRow, oldCurrentRow)"

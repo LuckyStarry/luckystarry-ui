@@ -1,25 +1,43 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Pagination } from '../../components'
-import { Pagination as PaginationCriteria, Response, SearchResult } from '../../models'
+import { Pagination as PaginationCriteria } from '../../models'
+import { ResponseAdapter, SearchResultAdapter } from '../../utils'
 
 @Component({ name: 'List', components: { Pagination } })
 export default class List<TEntity, TCriteria extends PaginationCriteria> extends Vue {
   @Prop({ required: true })
   public criteria!: TCriteria
   @Prop({ type: Function, required: true })
-  public searchApi!: (criteria: TCriteria) => Promise<Response<SearchResult<TEntity>>>
+  public searchApi!: (criteria: TCriteria) => Promise<any>
   @Prop({ type: Function, default: (item: TEntity) => item })
   public decorate!: (item: TEntity) => any
+  @Prop({ type: Boolean, default: false })
+  public showToolbarOnSelect?: boolean
+  @Prop({ type: Function, default: null })
+  public responseAdapter?: ResponseAdapter
+  @Prop({ type: Function, default: null })
+  public searchResultAdapter?: SearchResultAdapter
 
   public list: TEntity[] = []
   public count: number = 0
   public loading: boolean = false
+  public toolbar: boolean = false
   public async search(): Promise<void> {
     this.loading = true
     try {
       let response = await this.searchApi(this.criteria)
-      this.list = response.Entity.List || []
-      this.count = response.Entity.Count || 0
+      if (this.responseAdapter) {
+        let payload = this.responseAdapter.getPayload(response)
+        if (payload) {
+          if (this.searchResultAdapter) {
+            this.list = this.searchResultAdapter.getList(payload)
+            this.count = this.searchResultAdapter.getCount(payload)
+          }
+        }
+      } else {
+        this.list = response.Entity.List || []
+        this.count = response.Entity.Count || 0
+      }
     } catch (e) {
       if (e) {
         if (e.message) {
@@ -44,5 +62,16 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
 
   public async mounted() {
     await this.search()
+  }
+
+  private __selectionChange(selection: TEntity[]) {
+    this.$emit('table-selection-change', selection)
+    if (this.showToolbarOnSelect) {
+      if (selection && selection.length) {
+        this.toolbar = true
+        return
+      }
+    }
+    this.toolbar = false
   }
 }

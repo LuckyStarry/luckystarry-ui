@@ -1,11 +1,11 @@
 import { v4 as uuid } from 'uuid'
-import { ResponseAdapter } from '../utils'
+import { DefaultResponseAdapter, ResponseAdapter } from '../utils'
 import { AxiosInterceptContext } from './axios-intercept-context'
 
 export class AxiosInterceptor {
   private adapter: ResponseAdapter
   public constructor(adapter?: ResponseAdapter) {
-    this.adapter = adapter || { isSuccessful: obj => obj && obj.Success, getMessage: obj => obj && obj.Message, getPayload: obj => obj && obj.Entity }
+    this.adapter = adapter || new DefaultResponseAdapter()
   }
 
   public intercept(context: AxiosInterceptContext) {
