@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Pagination } from '../../components'
 import { Pagination as PaginationCriteria } from '../../models'
-import { ResponseAdapter, SearchResultAdapter } from '../../utils'
+import { DefaultResponseAdapter, DefaultSearchResultAdapter, ResponseAdapter, SearchResultAdapter } from '../../utils'
 
 @Component({ name: 'List', components: { Pagination } })
 export default class List<TEntity, TCriteria extends PaginationCriteria> extends Vue {
@@ -13,9 +13,9 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
   public decorate!: (item: TEntity) => any
   @Prop({ type: Boolean, default: false })
   public showToolbarOnSelect?: boolean
-  @Prop({ type: Function, default: null })
+  @Prop({ type: Function, default: new DefaultResponseAdapter() })
   public responseAdapter?: ResponseAdapter
-  @Prop({ type: Function, default: null })
+  @Prop({ type: Function, default: new DefaultSearchResultAdapter() })
   public searchResultAdapter?: SearchResultAdapter
 
   public list: TEntity[] = []
@@ -32,6 +32,9 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
           if (this.searchResultAdapter) {
             this.list = this.searchResultAdapter.getList(payload)
             this.count = this.searchResultAdapter.getCount(payload)
+          } else {
+            this.list = payload.List || []
+            this.count = payload.Count || 0
           }
         }
       } else {
