@@ -1,0 +1,20 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       node-version: [8.x, 9.x, 10.x, 11.x, 12.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set Nodejs Version
+      uses: actions/setup-node@v1.1.0
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Dependencies
+      run: npm i
+    - name: Unit Tests
+      run: npm test
