@@ -1,14 +1,25 @@
 import { DAY, HOUR, MINUTE, SECOND } from './units'
 
+export const DEFAULT_FORMAT = '{y}-{m}-{d} {h}:{i}:{s}'
+
 export function toSmartString(time: number | Date): string {
-  let timestamp = 0
+  return getSmartDiff(time, Date.now())
+}
+
+export function getSmartDiff(time: number | Date, compared: number | Date): string {
+  let a = 0
   if (typeof time === 'number') {
-    timestamp = time
+    a = time
   } else {
-    timestamp = time.getTime()
+    a = time.getTime()
   }
-  let now = Date.now()
-  let diff = now - timestamp
+  let b = 0
+  if (typeof compared === 'number') {
+    b = compared
+  } else {
+    b = compared.getTime()
+  }
+  let diff = a - b
   let suffix = ''
   if (diff < 0) {
     suffix = '后'
@@ -18,13 +29,13 @@ export function toSmartString(time: number | Date): string {
   let desc = ''
   let abs = Math.abs(diff)
   if (abs > DAY) {
-    desc = `${Math.floor(diff / DAY)} 天`
+    desc = `${Math.floor(abs / DAY)} 天`
   } else if (abs > HOUR) {
-    desc = `${Math.floor(diff / HOUR)} 小时`
+    desc = `${Math.floor(abs / HOUR)} 小时`
   } else if (abs > MINUTE) {
-    desc = `${Math.floor(diff / MINUTE)} 分钟`
+    desc = `${Math.floor(abs / MINUTE)} 分钟`
   } else {
-    desc = `${Math.floor(diff / SECOND)} 秒`
+    desc = `${Math.floor(abs / SECOND)} 秒`
   }
   return `${desc}${suffix}`
 }
@@ -34,7 +45,7 @@ export const parseTime = (time?: Date | string | number, cFormat?: string): stri
   if (time === undefined || time === null) {
     return null
   }
-  const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+  let format = cFormat || DEFAULT_FORMAT
   let date: Date
   if (time instanceof Date) {
     date = time
@@ -47,7 +58,7 @@ export const parseTime = (time?: Date | string | number, cFormat?: string): stri
     }
     date = new Date(time)
   }
-  const formatObj: { [key: string]: number } = {
+  let payload: { [key: string]: number } = {
     y: date.getFullYear(),
     m: date.getMonth() + 1,
     d: date.getDate(),
@@ -56,13 +67,12 @@ export const parseTime = (time?: Date | string | number, cFormat?: string): stri
     s: date.getSeconds(),
     a: date.getDay()
   }
-  const timeStr = format.replace(/{([ymdhisa])+}/g, (result, key) => {
-    const value = formatObj[key]
+  return format.replace(/{([ymdhisa])+}/g, (result, key) => {
+    let value = payload[key]
     // Note: getDay() returns 0 on Sunday
     if (key === 'a') {
       return ['日', '一', '二', '三', '四', '五', '六'][value]
     }
     return value.toString().padStart(2, '0')
   })
-  return timeStr
 }
