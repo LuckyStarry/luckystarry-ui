@@ -84,8 +84,8 @@ describe('src/utils/times/utils', function() {
     expect(getSmartDiff(new Date(now + 86400001), new Date(now))).is.equals('1 天前')
   })
 
-  it('toSmartString(new Date(Date.now() + 86400001)) => 1 天前', function() {
+  it('toSmartString(new Date(Date.now() - 86400001)) => 1 天前', function() {
     let now = Date.now()
-    expect(toSmartString(new Date(now + 86400001))).is.equals('1 天前')
+    expect(toSmartString(new Date(now - 86400001))).is.equals('1 天前')
   })
 })
