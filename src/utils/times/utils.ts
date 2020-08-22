@@ -3,7 +3,7 @@ import { DAY, HOUR, MINUTE, SECOND } from './units'
 export const DEFAULT_FORMAT = '{y}-{m}-{d} {h}:{i}:{s}'
 
 export function toSmartString(time: number | Date): string {
-  return getSmartDiff(time, Date.now())
+  return getSmartDiff(Date.now(), time)
 }
 
 export function getSmartDiff(time: number | Date, compared: number | Date): string {
