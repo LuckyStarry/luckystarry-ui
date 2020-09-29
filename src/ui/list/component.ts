@@ -13,6 +13,8 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
   public decorate!: (item: TEntity) => any
   @Prop({ type: Boolean, default: false })
   public showToolbarOnSelect?: boolean
+  @Prop({ type: Boolean, default: false })
+  public showToolbar?: boolean
   @Prop({ type: Object, default: () => new DefaultResponseAdapter() })
   public responseAdapter?: ResponseAdapter
   @Prop({ type: Object, default: () => new DefaultSearchResultAdapter() })
@@ -64,11 +66,18 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
   }
 
   public async mounted() {
+    if (this.showToolbar) {
+      this.toolbar = true
+    }
     await this.search()
   }
 
   private __selectionChange(selection: TEntity[]) {
     this.$emit('table-selection-change', selection)
+    if (this.showToolbar) {
+      this.toolbar = true
+      return
+    }
     if (this.showToolbarOnSelect) {
       if (selection && selection.length) {
         this.toolbar = true

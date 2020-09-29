@@ -12,6 +12,7 @@
     <el-card class="toolbar-container" shadow="hover" v-if="toolbar">
       <slot name="toolbar" :search="search" :loading="loading" />
     </el-card>
+    <slot name="pre-table" :search="search" :loading="loading" />
     <el-table
       :data="decorated"
       border
@@ -27,6 +28,7 @@
       <slot name="columns" />
     </el-table>
     <pagination v-show="count > 0" :total="count" :page.sync="criteria.index" :limit.sync="criteria.size" @pagination="search" />
+    <slot name="post-table" :search="search" :loading="loading" />
   </div>
 </template>
 <script lang="ts" src="./component.ts" />
