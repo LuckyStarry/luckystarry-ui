@@ -12,14 +12,14 @@ export default class SideBarItem extends Vue {
   @Prop({ default: '' }) private basePath!: string
   @Prop({ default: false }) private showChildrenIcon!: boolean
 
-  get alwaysShowRootMenu() {
+  public get alwaysShowRootMenu() {
     if (this.item.meta && this.item.meta.alwaysShow) {
       return true
     }
     return false
   }
 
-  get showingChildNumber() {
+  public get showingChildNumber() {
     if (this.item.children) {
       const showingChildren = this.item.children.filter(item => {
         if (item.meta && item.meta.hidden) {
@@ -33,7 +33,7 @@ export default class SideBarItem extends Vue {
     return 0
   }
 
-  get theOnlyOneChild() {
+  public get theOnlyOneChild() {
     if (this.showingChildNumber > 1) {
       return null
     }
@@ -47,6 +47,16 @@ export default class SideBarItem extends Vue {
     // If there is no children, return itself with path removed,
     // because this.basePath already conatins item's path information
     return { ...this.item, path: '' }
+  }
+
+  private getTitle(title: string): string {
+    let name = 'route.' + title
+    let trans = `${this.$t(name)}`
+    if (trans && trans !== name) {
+      return trans
+    } else {
+      return title
+    }
   }
 
   private resolvePath(routePath: string) {
