@@ -5,6 +5,8 @@ import { DefaultResponseAdapter, DefaultSearchResultAdapter, ResponseAdapter, Se
 
 @Component({ name: 'List', components: { Pagination } })
 export default class List<TEntity, TCriteria extends PaginationCriteria> extends Vue {
+  @Prop({ default: () => [10, 20, 30, 50] })
+  public pageSizes!: number[]
   @Prop({ required: true })
   public criteria!: TCriteria
   @Prop({ type: Function, required: true })

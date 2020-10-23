@@ -25,6 +25,12 @@ const externals = {
     commonjs2: 'vue-router',
     amd: 'vue-router'
   },
+  'vue-svgicon': {
+    root: 'VueSvgIcon',
+    commonjs: 'vue-svgicon',
+    commonjs2: 'vue-svgicon',
+    amd: 'vue-svgicon'
+  },
   'element-ui': {
     root: 'ELEMENT',
     commonjs: 'element-ui',

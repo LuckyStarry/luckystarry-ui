@@ -27,7 +27,7 @@
     >
       <slot name="columns" />
     </el-table>
-    <pagination v-show="count > 0" :total="count" :page.sync="criteria.index" :limit.sync="criteria.size" @pagination="search" />
+    <pagination v-show="count > 0" :page-sizes="pageSizes" :total="count" :page.sync="criteria.index" :limit.sync="criteria.size" @pagination="search" />
     <slot name="post-table" :search="search" :loading="loading" />
   </div>
 </template>
