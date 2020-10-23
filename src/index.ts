@@ -39,7 +39,7 @@ const install = function(Vue: any, opts?: any) {
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
-export default { App, AppMain, Builder, Context, Layout, components, mixins, models, store, utils, install }
+export default { App, AppMain, Builder, Context, Layout, components, contexts, interceptors, mixins, models, store, ui, utils, install }
 declare global {
   interface Date {
     toSmartString(): string

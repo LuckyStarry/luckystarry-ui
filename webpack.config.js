@@ -2,7 +2,6 @@ const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const components = require('./components.json')
-const package = require('./package.json')
 const entry = {}
 Object.keys(components).forEach(item => {
   entry[item] = components[item]
