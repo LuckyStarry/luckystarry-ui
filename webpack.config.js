@@ -20,6 +20,12 @@ const externals = {
     commonjs2: 'vuex',
     amd: 'vuex'
   },
+  'vue-router': {
+    root: 'VueRouter',
+    commonjs: 'vue-router',
+    commonjs2: 'vue-router',
+    amd: 'vue-router'
+  },
   'element-ui': {
     root: 'ELEMENT',
     commonjs: 'element-ui',
