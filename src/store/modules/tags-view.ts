@@ -40,11 +40,13 @@ export class TagsView extends VuexModule implements ITagsViewState {
 
   @Mutation
   private DEL_VISITED_VIEW(view: ITagView) {
-    for (const [i, v] of this.visitedViews.entries()) {
+    let i = 0
+    for (const v of this.visitedViews) {
       if (v.path === view.path) {
         this.visitedViews.splice(i, 1)
         break
       }
+      i++
     }
   }
 

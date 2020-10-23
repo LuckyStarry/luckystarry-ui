@@ -7,15 +7,26 @@ const entry = {}
 Object.keys(components).forEach(item => {
   entry[item] = components[item]
 })
-const { dependencies } = package
-const externals = {}
-Object.keys(dependencies).forEach(item => {
-  externals[item] = {
-    commonjs: item,
-    commonjs2: item,
-    amd: item
+const externals = {
+  vue: {
+    root: 'Vue',
+    commonjs: 'vue',
+    commonjs2: 'vue',
+    amd: 'vue'
+  },
+  vuex: {
+    root: 'Vuex',
+    commonjs: 'vuex',
+    commonjs2: 'vuex',
+    amd: 'vuex'
+  },
+  'element-ui': {
+    root: 'ELEMENT',
+    commonjs: 'element-ui',
+    commonjs2: 'element-ui',
+    amd: 'element-ui'
   }
-})
+}
 
 module.exports = {
   entry,
@@ -23,7 +34,10 @@ module.exports = {
     filename: '[name].js',
     path: path.resolve(__dirname, 'lib'),
     library: 'LuckystarryUI',
-    libraryTarget: 'umd'
+    libraryExport: 'default',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
+    globalObject: "typeof self !== 'undefined' ? self : this"
   },
   module: {
     rules: [
