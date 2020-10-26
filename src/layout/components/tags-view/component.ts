@@ -169,4 +169,14 @@ export default class TagsView extends Vue {
   private closeMenu() {
     this.visible = false
   }
+
+  private getTitle(title: string): string {
+    let name = 'route.' + title
+    let trans = `${this.$t(name)}`
+    if (trans && trans !== name) {
+      return trans
+    } else {
+      return title
+    }
+  }
 }
