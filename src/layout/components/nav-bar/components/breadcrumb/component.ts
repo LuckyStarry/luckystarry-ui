@@ -15,7 +15,7 @@ export default class Breadcrumb extends Vue {
     this.getBreadcrumb()
   }
 
-  created() {
+  public created() {
     this.getBreadcrumb()
   }
 
@@ -52,5 +52,15 @@ export default class Breadcrumb extends Vue {
       return
     }
     await this.$router.push(this.pathCompile(path))
+  }
+
+  private getTitle(title: string): string {
+    let name = 'route.' + title
+    let trans = `${this.$t(name)}`
+    if (trans && trans !== name) {
+      return trans
+    } else {
+      return title
+    }
   }
 }
