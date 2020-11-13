@@ -1,4 +1,7 @@
 import { DAY, HOUR, MINUTE, SECOND } from './units'
+const WEEK = DAY * 7
+const MONTH = DAY * 30
+const YEAR = DAY * 365
 
 export const DEFAULT_FORMAT = '{y}-{m}-{d} {h}:{i}:{s}'
 
@@ -28,7 +31,14 @@ export function getSmartDiff(time: number | Date, compared: number | Date): stri
   }
   let desc = ''
   let abs = Math.abs(diff)
-  if (abs > DAY) {
+
+  if (abs > YEAR) {
+    desc = `${Math.floor(abs / YEAR)} 年`
+  } else if (abs > MONTH) {
+    desc = `${Math.floor(abs / MONTH)} 月`
+  } else if (abs > WEEK) {
+    desc = `${Math.floor(abs / WEEK)} 周`
+  } else if (abs > DAY) {
     desc = `${Math.floor(abs / DAY)} 天`
   } else if (abs > HOUR) {
     desc = `${Math.floor(abs / HOUR)} 小时`
