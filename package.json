@@ -1,6 +1,6 @@
 {
   "name": "luckystarry-ui",
-  "version": "1.0.5-0",
+  "version": "1.0.5-1",
   "description": "这是一个管理后台的框架组件，封装了常用的后台功能，为使用者提供快速统一的后台搭建解决方案。",
   "main": "lib/index.js",
   "scripts": {
