@@ -27,7 +27,7 @@ export class App extends VuexModule<IAppState, IRootState> implements IAppState 
   public host: string = ''
   public size: string = 'mini'
   public title: string = ''
-  public logo: string = ''
+  public logo: string = 'logo'
   public language: string = 'zh'
 
   public get Sidebar() {

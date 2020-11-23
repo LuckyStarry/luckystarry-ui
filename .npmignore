@@ -1,7 +1,8 @@
-.github
-.nyc_output
-.vscode
-node_modules
-coverage
+/.github/
+/.nyc_output/
+/.vscode/
+/node_modules/
+/coverage/
+/demo/
 .travis.yml
 package-lock.json

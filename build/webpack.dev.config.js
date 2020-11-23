@@ -1,54 +1,16 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const components = require('./components.json')
-const entry = {}
-Object.keys(components).forEach(item => {
-  entry[item] = components[item]
-})
 const externals = {
-  vue: {
-    root: 'Vue',
-    commonjs: 'vue',
-    commonjs2: 'vue',
-    amd: 'vue'
-  },
-  vuex: {
-    root: 'Vuex',
-    commonjs: 'vuex',
-    commonjs2: 'vuex',
-    amd: 'vuex'
-  },
-  'vue-router': {
-    root: 'VueRouter',
-    commonjs: 'vue-router',
-    commonjs2: 'vue-router',
-    amd: 'vue-router'
-  },
-  'vue-svgicon': {
-    root: 'VueSvgIcon',
-    commonjs: 'vue-svgicon',
-    commonjs2: 'vue-svgicon',
-    amd: 'vue-svgicon'
-  },
-  'element-ui': {
-    root: 'ELEMENT',
-    commonjs: 'element-ui',
-    commonjs2: 'element-ui',
-    amd: 'element-ui'
-  }
 }
 
 module.exports = {
-  entry,
+  entry: { main: './demo/main' },
   output: {
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/dist',
     filename: '[name].js',
-    path: path.resolve(__dirname, 'lib'),
-    library: 'LuckystarryUI',
-    libraryExport: 'default',
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    globalObject: "typeof self !== 'undefined' ? self : this"
+    chunkFilename: '[name].chunk.js'
   },
   module: {
     rules: [
@@ -89,11 +51,21 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.vue']
   },
-  plugins: [
-    new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({
-      filename: '/theme/[name].css'
-    })
-  ],
-  externals
+  plugins: [new VueLoaderPlugin(),
+  new MiniCssExtractPlugin({
+    filename: 'main.css'
+  })],
+  externals,
+  devServer: {
+    contentBase: './dist',
+    compress: true,
+    port: 9000,
+    host: '0.0.0.0',
+    disableHostCheck: true,
+    hot: true,
+    inline: true,
+    historyApiFallback: true,
+    proxy: {
+    }
+  }
 }
