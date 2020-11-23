@@ -14,7 +14,8 @@ export default class Login extends Vue {
 
   @Prop({ type: String, default: 'simple' })
   public oauthType!: string
-
+  @Prop({ type: Boolean, default: true })
+  public autoLogin!: boolean
   @Getter('app/Host')
   public host!: string
 
@@ -49,9 +50,11 @@ export default class Login extends Vue {
   }
 
   public async mounted() {
-    if (!sessionStorage.getItem('luckystarry.login.state')) {
-      sessionStorage.setItem('luckystarry.login.state', 'ON')
-      await this.login()
+    if (this.autoLogin) {
+      if (!sessionStorage.getItem('luckystarry.login.state')) {
+        sessionStorage.setItem('luckystarry.login.state', 'ON')
+        await this.login()
+      }
     }
   }
 }
