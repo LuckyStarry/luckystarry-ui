@@ -47,4 +47,11 @@ export default class Login extends Vue {
     let uri = await context.oauth.authorize(this.oauthType, payload)
     window.location.replace(uri)
   }
+
+  public async mounted() {
+    if (!sessionStorage.getItem('luckystarry.login.state')) {
+      sessionStorage.setItem('luckystarry.login.state', 'ON')
+      await this.login()
+    }
+  }
 }
