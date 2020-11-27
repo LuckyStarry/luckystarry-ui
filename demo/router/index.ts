@@ -1,7 +1,7 @@
 /* Layout */
 import Vue from 'vue'
 import Router, { RouteConfig } from 'vue-router'
-import { system } from './modules'
+import { Layout } from '../../src'
 
 Vue.use(Router)
 
@@ -33,7 +33,22 @@ Vue.use(Router)
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouteConfig[] = [
-  system,
+  {
+    path: '/list-home',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: '/list',
+        component: () => import('../view/list'),
+        name: 'list',
+        meta: {
+          title: '列表页',
+          icon: 'extra/settings'
+        }
+      }
+    ]
+  },
   {
     path: '*',
     redirect: '/404',
