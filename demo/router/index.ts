@@ -50,6 +50,22 @@ export const asyncRoutes: RouteConfig[] = [
     ]
   },
   {
+    path: '/form-home',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: '/form',
+        component: () => import('../view/form'),
+        name: 'form',
+        meta: {
+          title: '表单页',
+          icon: 'extra/settings'
+        }
+      }
+    ]
+  },
+  {
     path: '*',
     redirect: '/404',
     meta: { hidden: true }
