@@ -4,8 +4,7 @@ import { DefaultResponseAdapter, ResponseAdapter } from '../../utils'
 
 @Component({ name: 'Form', components: { Pagination } })
 export default class Form<TEntity> extends Vue {
-  @Prop({ required: true })
-  public subject!: TEntity
+  public subject: TEntity | null = null
   @Prop({ type: Function, required: true })
   public loadApi!: () => Promise<any>
   @Prop({ type: Object, default: () => new DefaultResponseAdapter() })
@@ -14,13 +13,10 @@ export default class Form<TEntity> extends Vue {
   public rules?: any
   @Prop({ type: String, default: '' })
   public stickyTips?: string
-  @Prop({ type: Function, required: true })
-  public saveApi!: () => Promise<any>
 
   public loading: boolean = false
   public async load(): Promise<void> {
-    this.loading = true
-    try {
+    this.proxy(async () => {
       let response = await this.loadApi()
       if (this.responseAdapter) {
         if (this.responseAdapter.isSuccessful(response)) {
@@ -38,6 +34,13 @@ export default class Form<TEntity> extends Vue {
         this.subject = null as any
         return
       }
+    })
+  }
+
+  public async proxy(process: () => Promise<void>) {
+    this.loading = true
+    try {
+      await process()
     } catch (e) {
       if (e) {
         if (e.message) {
@@ -52,8 +55,6 @@ export default class Form<TEntity> extends Vue {
       this.loading = false
     }
   }
-
-  public async proxy(process: () => Promise<void>) {}
 
   public async mounted() {
     await this.load()

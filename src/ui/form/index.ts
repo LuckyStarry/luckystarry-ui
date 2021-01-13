@@ -1,3 +1,3 @@
-import { default as List } from './component.vue'
-export { List }
-export default List
+import { default as Form } from './component.vue'
+export { Form }
+export default Form
