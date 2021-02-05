@@ -16,8 +16,8 @@ export class RouterBuilder {
     })
     this.mappings.set('401', { path: '/401', component: ui.Page401, meta: { hidden: true, white: true } })
     this.mappings.set('404', { path: '/404', component: ui.Page404, meta: { hidden: true, white: true } })
-    this.mappings.set('login', { path: '/login', component: ui.Login, meta: { hidden: true, white: true } })
-    this.mappings.set('callback', { path: '/oauth/callback', component: ui.Callback, meta: { hidden: true, white: true } })
+    this.mappings.set('login', { path: '/login', component: ui.Login, meta: { hidden: true, white: true, noCache: true } })
+    this.mappings.set('callback', { path: '/oauth/callback', component: ui.Callback, meta: { hidden: true, white: true, noCache: true } })
     this.mappings.set('redirect', {
       path: '/redirect',
       component: Layout,
