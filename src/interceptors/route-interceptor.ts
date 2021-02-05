@@ -4,17 +4,19 @@ import { RouteInterceptContext } from './route-intercept-context'
 export class RouteInterceptor {
   private config: { login: NavigationGuard }
   public constructor(config?: { login: NavigationGuard }) {
-    let _config: { login: NavigationGuard } = config || ({} as any)
-    _config.login =
-      _config.login ||
-      ((to, _, next) => {
-        next(`/login?redirect=${to.path}`)
-      })
-    this.config = _config
+    if (config) {
+      this.config = config
+    } else {
+      this.config = {
+        login: (to, _, next) => {
+          next(`/login?redirect=${to.path}`)
+        }
+      }
+    }
   }
 
   public intercept(context: RouteInterceptContext) {
-    context.router.beforeEach(async (to: Route, _: Route, next: any) => {
+    context.router.beforeEach(async (to: Route, from: Route, next: any) => {
       if (context.process) {
         context.process.start()
       }
@@ -38,7 +40,7 @@ export class RouteInterceptor {
                 // tslint:disable-next-line: no-floating-promises
                 context.message.error(err || 'Has Error')
               }
-              this.config.login(to, _, next)
+              this.config.login(to, from, next)
               if (context.process) {
                 context.process.done()
               }
@@ -51,7 +53,7 @@ export class RouteInterceptor {
         if (to.meta && to.meta.white) {
           next()
         } else {
-          this.config.login(to, _, next)
+          this.config.login(to, from, next)
           if (context.process) {
             context.process.done()
           }
