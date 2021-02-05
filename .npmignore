@@ -6,3 +6,4 @@
 /demo/
 .travis.yml
 package-lock.json
+*.tgz
