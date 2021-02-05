@@ -1,7 +1,18 @@
-import { Route } from 'vue-router'
+import { NavigationGuard, Route } from 'vue-router'
 import { RouteInterceptContext } from './route-intercept-context'
 
 export class RouteInterceptor {
+  private config: { login: NavigationGuard }
+  public constructor(config?: { login: NavigationGuard }) {
+    let _config: { login: NavigationGuard } = config || ({} as any)
+    _config.login =
+      _config.login ||
+      ((to, _, next) => {
+        next(`/login?redirect=${to.path}`)
+      })
+    this.config = _config
+  }
+
   public intercept(context: RouteInterceptContext) {
     context.router.beforeEach(async (to: Route, _: Route, next: any) => {
       if (context.process) {
@@ -27,7 +38,7 @@ export class RouteInterceptor {
                 // tslint:disable-next-line: no-floating-promises
                 context.message.error(err || 'Has Error')
               }
-              next(`/login?redirect=${to.path}`)
+              this.config.login(to, _, next)
               if (context.process) {
                 context.process.done()
               }
@@ -40,7 +51,7 @@ export class RouteInterceptor {
         if (to.meta && to.meta.white) {
           next()
         } else {
-          next(`/login?redirect=${to.path}`)
+          this.config.login(to, _, next)
           if (context.process) {
             context.process.done()
           }
