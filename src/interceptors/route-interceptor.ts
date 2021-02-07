@@ -51,10 +51,14 @@ export class RouteInterceptor {
         }
       } else {
         if (to.meta && to.meta.white) {
-          if (to.path === '/login') {
-            this.config.login(to, from, next)
-          } else {
+          if (from.path === '/login') {
             next()
+          } else {
+            if (to.path === '/login') {
+              this.config.login(to, from, next)
+            } else {
+              next()
+            }
           }
         } else {
           this.config.login(to, from, next)
