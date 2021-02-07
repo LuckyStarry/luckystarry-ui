@@ -16,7 +16,7 @@ export default class Form<TEntity> extends Vue {
 
   public loading: boolean = false
   public async load(): Promise<void> {
-    this.proxy(async () => {
+    await this.proxy(async () => {
       let response = await this.loadApi()
       if (this.responseAdapter) {
         if (this.responseAdapter.isSuccessful(response)) {
