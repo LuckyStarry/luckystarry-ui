@@ -2,7 +2,7 @@
 
 这是一个后台框架的类型定义工具组件，目前仍处于测试期，接口及功能可能随时会有变更。
 
-[![Build Status](https://www.travis-ci.org/LuckyStarry/luckystarry-ui.svg?branch=master)](https://www.travis-ci.org/LuckyStarry/luckystarry-ui?branch=master)
+[![Build Status](https://api.travis-ci.com/LuckyStarry/luckystarry-ui.svg?branch=master)](https://www.travis-ci.com/github/LuckyStarry/luckystarry-ui?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/LuckyStarry/luckystarry-ui/badge.svg?branch=master)](https://coveralls.io/github/LuckyStarry/luckystarry-ui?branch=master)
 [![Npm Status](https://img.shields.io/npm/v/luckystarry-ui.svg)](https://www.npmjs.com/package/luckystarry-ui)
 [![install size](https://packagephobia.now.sh/badge?p=luckystarry-ui)](https://packagephobia.now.sh/result?p=luckystarry-ui)
