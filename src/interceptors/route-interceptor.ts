@@ -16,7 +16,7 @@ export class RouteInterceptor {
   }
 
   public intercept(context: RouteInterceptContext) {
-    context.router.beforeEach(async (to: Route, from: Route, next: any) => {
+    context.router.beforeEach(async (to, from, next) => {
       if (context.process) {
         context.process.start()
       }
@@ -33,7 +33,7 @@ export class RouteInterceptor {
               const roles = context.store.state.user.roles
               await context.store.dispatch('permission/GenerateRoutes', roles)
               context.router.addRoutes(context.store.state.permission.dynamic)
-              next({ ...to, replace: true })
+              next({ ...to, replace: true } as any)
             } catch (err) {
               await context.store.dispatch('user/ResetToken')
               if (context.message) {
@@ -51,7 +51,11 @@ export class RouteInterceptor {
         }
       } else {
         if (to.meta && to.meta.white) {
-          next()
+          if (to.path === '/login') {
+            this.config.login(to, from, next)
+          } else {
+            next()
+          }
         } else {
           this.config.login(to, from, next)
           if (context.process) {
