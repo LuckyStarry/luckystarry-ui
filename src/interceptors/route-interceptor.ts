@@ -9,7 +9,11 @@ export class RouteInterceptor {
     } else {
       this.config = {
         login: (to, _, next) => {
-          next(`/login?redirect=${to.path}`)
+          if (to.path === '/login') {
+            next()
+          } else {
+            next(`/login?redirect=${to.path}`)
+          }
         }
       }
     }
@@ -23,9 +27,6 @@ export class RouteInterceptor {
       if (context.store.state.user.token) {
         if (to.path === '/login') {
           next({ path: '/' })
-          if (context.process) {
-            context.process.done()
-          }
         } else {
           if (context.store.state.user.roles.length === 0) {
             try {
@@ -41,9 +42,6 @@ export class RouteInterceptor {
                 context.message.error(err || 'Has Error')
               }
               this.config.login(to, from, next)
-              if (context.process) {
-                context.process.done()
-              }
             }
           } else {
             next()
@@ -51,12 +49,13 @@ export class RouteInterceptor {
         }
       } else {
         if (to.meta && to.meta.white) {
-          next()
+          if (to.path === '/login') {
+            this.config.login(to, from, next)
+          } else {
+            next()
+          }
         } else {
           this.config.login(to, from, next)
-          if (context.process) {
-            context.process.done()
-          }
         }
       }
     })
