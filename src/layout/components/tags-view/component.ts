@@ -122,7 +122,6 @@ export default class TagsView extends Vue {
   }
 
   private async closeOthersTags() {
-    await this.$router.push({ path: this.selectedTag.fullPath })
     await this.$store.dispatch('tagsView/delOthersViews', this.selectedTag)
     this.moveToCurrentTag()
   }
