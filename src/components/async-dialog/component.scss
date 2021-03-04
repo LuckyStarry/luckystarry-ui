@@ -1,2 +1,12 @@
 .async-dialog {
+  .async-dialog-panel {
+    .async-dialog-content {
+      min-height: 200px;
+    }
+
+    .async-dialog-buttons {
+      margin-top: 20px;
+      text-align: right;
+    }
+  }
 }
