@@ -3,7 +3,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 interface Context<T = any, U = T> {
   title?: string
   load?: () => Promise<T>
-  process?: () => Promise<U>
+  process?: (subject: T) => Promise<U>
 }
 
 @Component({ name: AsyncDialog.name })
@@ -77,7 +77,7 @@ export default class AsyncDialog<T = any, U = T> extends Vue {
       try {
         this.loading = true
         this.processing = true
-        subject = await this.context.process()
+        subject = await this.context.process(this.subject)
         legal = true
       } catch (error) {
         if (error) {
