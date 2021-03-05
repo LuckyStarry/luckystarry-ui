@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          check-latest: true
       - name: Install Dependencies
         run: npm i
       - name: Unit Tests
@@ -32,6 +33,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+          check-latest: true
       - name: Install Dependencies
         run: npm i
       - name: Publish On NPM
@@ -51,6 +53,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://www.myget.org/F/luckystarry/npm/'
+          check-latest: true
       - name: Install Dependencies
         run: npm i
       - name: Publish On MYGET
@@ -70,6 +73,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://npm.pkg.github.com'
+          check-latest: true
       - name: Install Dependencies
         run: npm i
       - name: Publish On GITHUB
