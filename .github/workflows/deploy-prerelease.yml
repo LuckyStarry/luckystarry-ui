@@ -48,11 +48,15 @@ jobs:
     needs: [deploy-myget]
     runs-on: ubuntu-latest
     steps:
+      - name: Get Tag
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Pre-Release Github Tag
         uses: release-drafter/release-drafter@v5
         with:
-          name: ${{ github.ref }}
-          tag: ${{ github.ref }}
+          name: ${{ steps.version.outputs.VERSION }}
+          tag: ${{ steps.version.outputs.VERSION }}
+          publish: true
           prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
