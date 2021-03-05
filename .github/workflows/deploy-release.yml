@@ -1,4 +1,4 @@
-name: DEPLOY-NPM-RELEASE
+name: DEPLOY-RELEASE
 on:
   push:
     tags:
