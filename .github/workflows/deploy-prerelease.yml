@@ -58,7 +58,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.MYGET_TOKEN }}
   github-tag-prelease:
-    needs: [deploy-myget]
+    needs: [deploy-npm, deploy-myget]
     runs-on: ubuntu-latest
     steps:
       - name: Get Tag
