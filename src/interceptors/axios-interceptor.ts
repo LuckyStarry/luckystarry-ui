@@ -1,13 +1,7 @@
-import { v4 as uuid } from 'uuid'
-import { DefaultResponseAdapter, ResponseAdapter } from '../utils'
+import { Message, MessageBox } from 'element-ui'
 import { AxiosInterceptContext } from './axios-intercept-context'
 
 export class AxiosInterceptor {
-  private adapter: ResponseAdapter
-  public constructor(adapter?: ResponseAdapter) {
-    this.adapter = adapter || new DefaultResponseAdapter()
-  }
-
   public intercept(context: AxiosInterceptContext) {
     if (!context.axios) {
       return
@@ -15,11 +9,12 @@ export class AxiosInterceptor {
 
     context.axios.interceptors.request.use(
       config => {
-        if (context.store.state.user.token) {
-          config.headers['Authorization'] = `Berear ${context.store.state.user.token}`
-          config.headers['X-Access-Token'] = context.store.state.user.token
+        config.headers = config.headers || {}
+        if (context.headers && context.headers.length) {
+          for (let builder of context.headers) {
+            builder.build(config.headers)
+          }
         }
-        config.headers['X-Ca-Nonce'] = uuid()
         return config
       },
       error => {
@@ -33,56 +28,44 @@ export class AxiosInterceptor {
         if (response.status !== 200) {
           switch (response.status) {
             case 401:
-              if (context.messagebox) {
-                // tslint:disable-next-line: no-floating-promises
-                context.messagebox
-                  .confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-                    confirmButtonText: '重新登录',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  })
-                  .then(async () => {
-                    await context.store.dispatch('user/ResetToken')
-                    location.reload()
-                  })
-              }
+              // tslint:disable-next-line: no-floating-promises
+              MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+                confirmButtonText: '重新登录',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(async () => {
+                await context.store.dispatch('user/ResetToken')
+                location.reload()
+              })
               break
             case 403:
-              if (context.messagebox) {
-                // tslint:disable-next-line: no-floating-promises
-                context.messagebox.alert('您的权限不足', '权限不足', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                })
-              }
+              // tslint:disable-next-line: no-floating-promises
+              MessageBox.alert('您的权限不足', '权限不足', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              })
               break
           }
         } else {
-          let data = response.data
-          if (!this.adapter.isSuccessful(data)) {
-            if (context.message) {
-              // tslint:disable-next-line: no-floating-promises
-              context.message.error(this.adapter.getMessage(data) || 'Error')
-            }
+          let data = context.factory.create(response.data)
+          if (!data.Success) {
+            // tslint:disable-next-line: no-floating-promises
+            Message.warning(data.Message || '您的操作不成功。')
             return Promise.reject(response.data)
           } else {
-            if (this.adapter.getMessage(data)) {
-              if (context.message) {
-                // tslint:disable-next-line: no-floating-promises
-                context.message.success(this.adapter.getMessage(data))
-              }
+            if (data.Message) {
+              // tslint:disable-next-line: no-floating-promises
+              Message.success(data.Message)
             }
             return response.data
           }
         }
       },
       error => {
-        if (context.message) {
-          // tslint:disable-next-line: no-floating-promises
-          context.message.error(error.message || 'Error')
-          return Promise.reject(error)
-        }
+        // tslint:disable-next-line: no-floating-promises
+        Message.error(error.message || '您的操作出错了，请稍候再试。')
+        return Promise.reject(error)
       }
     )
   }
