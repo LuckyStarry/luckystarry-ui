@@ -15,7 +15,7 @@ export async function search(model: SearchDTO): Promise<models.Response<models.S
         .Take(model.size)
         .ToArray()
         .map(x => Object.assign({}, x))
-      return resolve({ Success: true, Message: '查询成功', Entity: { List: list || [], Count: source.length } })
+      return resolve({ Success: true, Message: '查询成功', Payload: { List: list || [], Count: source.length } })
     }, 500 + Math.random() * 1000)
   })
 }
@@ -25,9 +25,9 @@ export async function load(id: number): Promise<models.Response<ItemVo>> {
     setTimeout(() => {
       let source = ITEMS.find(x => x.id === id)
       if (source) {
-        return resolve({ Success: true, Message: '查询成功', Entity: source })
+        return resolve({ Success: true, Message: '查询成功', Payload: source })
       } else {
-        return resolve({ Success: false, Message: '未查询到用户数据', Entity: null as any })
+        return resolve({ Success: false, Message: '未查询到用户数据', Payload: null as any })
       }
     }, 500 + Math.random() * 1000)
   })

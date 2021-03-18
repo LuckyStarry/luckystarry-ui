@@ -15,7 +15,7 @@ export async function search(model: SearchDTO): Promise<models.Response<models.S
         .Take(model.size)
         .ToArray()
         .map(x => Object.assign({}, x))
-      return resolve({ Success: true, Message: '查询成功', Entity: { List: list || [], Count: source.length } })
+      return resolve({ Success: true, Message: '查询成功', Payload: { List: list || [], Count: source.length } })
     }, 500 + Math.random() * 1000)
   })
 }
