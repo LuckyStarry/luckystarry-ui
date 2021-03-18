@@ -32,6 +32,7 @@ export class OAuthClientSimple implements OAuthClient {
   public async callback(payload: OAuthPayload): Promise<string> {
     let match = window.location.hash.match(/access_token=([^&]*)/i)
     let token = (match && match[1]) || ''
+    console.log(token)
     if (token) {
       await this.store.dispatch('user/Callback', () => Promise.resolve({ token }))
       let index = window.location.href.indexOf('#')
