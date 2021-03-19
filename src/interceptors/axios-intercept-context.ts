@@ -1,7 +1,7 @@
-import { adapters } from '@/models'
-import { IRootState } from '@/store'
 import { AxiosInstance } from 'axios'
 import { Store } from 'vuex'
+import { adapters } from '../models'
+import { IRootState } from '../store'
 import { AxiosHeaderBuilder } from './axios-header-builder'
 
 export interface AxiosInterceptContext {

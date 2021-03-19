@@ -1,5 +1,5 @@
-import { IRootState } from '@/store'
 import { Store } from 'vuex'
+import { IRootState } from '../store'
 import { AxiosHeaderBuilder } from './axios-header-builder'
 
 export class DefaultAxiosHeaderBuilder implements AxiosHeaderBuilder {
