@@ -49,16 +49,16 @@ export class AxiosInterceptor {
           }
         } else {
           let data = context.factory.create(response.data)
-          if (!data.Success) {
-            // tslint:disable-next-line: no-floating-promises
-            Message.warning(data.Message || '您的操作不成功。')
-            return Promise.reject(response.data)
-          } else {
+          if (data.Success) {
             if (data.Message) {
               // tslint:disable-next-line: no-floating-promises
               Message.success(data.Message)
             }
-            return response.data
+            return data as any
+          } else {
+            // tslint:disable-next-line: no-floating-promises
+            Message.warning(data.Message || '您的操作不成功。')
+            return Promise.reject(data)
           }
         }
       },
