@@ -1,7 +1,7 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     frameworks: ['mocha'],
     files: ['test/**/*.spec.ts'],
@@ -12,24 +12,21 @@ module.exports = function(config) {
     webpack: {
       mode: 'development',
       output: {
-        filename: '[name].js',
         path: path.resolve(__dirname, 'lib')
       },
       module: {
         rules: [
           {
             test: /\.[t|j]s(x?)$/,
-            use: {
-              loader: 'istanbul-instrumenter-loader',
-              options: { esModules: true }
-            },
+            loader: 'istanbul-instrumenter-loader',
+            options: { esModules: true },
             enforce: 'post',
             exclude: [/node_modules/, /\.spec\.ts$/, /component\.ts/]
           },
           {
             test: /\.js$/,
             exclude: /node_modules/,
-            loader: ['babel-loader']
+            loader: 'babel-loader'
           },
           {
             test: /\.ts(x?)$/,
@@ -38,7 +35,7 @@ module.exports = function(config) {
           },
           {
             test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-            loader: 'url-loader?limit=8192'
+            loader: 'url-loader'
           },
           {
             test: /\.(sa|sc)ss$/,
@@ -55,7 +52,8 @@ module.exports = function(config) {
         ]
       },
       resolve: {
-        extensions: ['.ts', '.js', '.vue']
+        extensions: ['.ts', '.js', '.vue'],
+        fallback: { path: require.resolve('path-browserify') }
       },
       plugins: [new VueLoaderPlugin()]
     },
