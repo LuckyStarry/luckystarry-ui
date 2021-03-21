@@ -1,3 +1,5 @@
 demo/**
 test/**
 build/**
+karma.conf.coveralls.js
+karma.conf.js
