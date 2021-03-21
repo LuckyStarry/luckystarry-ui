@@ -6,7 +6,8 @@
       <p>OOPS!</p>
       <p><strong>404</strong> Page not found。</p>
       <p>
-        <el-link @click="backToHome">{{ $t('login.back-to-home') }}</el-link>
+        <el-link @click="backToHome">返回首页</el-link>
+        <el-link :href="$route.redirectedFrom" v-if="$route.redirectedFrom">返回重试</el-link>
       </p>
     </article>
   </main>

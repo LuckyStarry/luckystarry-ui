@@ -1,4 +1,4 @@
-export interface SearchResult<T> {
+export interface SearchResult<T = any> {
   readonly List: T[]
   readonly Count: number
 }

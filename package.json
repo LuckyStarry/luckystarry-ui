@@ -1,6 +1,6 @@
 {
   "name": "luckystarry-ui",
-  "version": "1.0.5",
+  "version": "1.1.0-2",
   "description": "这是一个管理后台的框架组件，封装了常用的后台功能，为使用者提供快速统一的后台搭建解决方案。",
   "main": "lib/index.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "luckystarry-collections": "^1.0.0",
     "mini-css-extract-plugin": "^0.9.0",
     "nprogress": "^0.2.0",
+    "path-browserify": "^1.0.1",
     "path-to-regexp": "^6.1.0",
     "screenfull": "^5.0.2",
     "sortablejs": "^1.10.2",
@@ -72,6 +73,7 @@
     "del-cli": "^3.0.1",
     "file-loader": "^6.0.0",
     "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^16.5.1",
     "karma": "^6.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
@@ -81,7 +83,7 @@
     "karma-mocha": "^2.0.1",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.32",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "5.0.0",
     "mocha": "^7.2.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",

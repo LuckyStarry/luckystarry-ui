@@ -13,38 +13,27 @@ import * as filters from './filters'
 import './icons/components'
 import * as interceptors from './interceptors'
 import * as lang from './lang'
+import { adapters } from './models'
 import { IRootState } from './store'
-import { helper, ui } from './utils'
 
 export class Builder {
   private _payload: any = {}
   private _routers!: VueRouter
   private _store!: Store<IRootState>
   private _app!: VueConstructor
-  private _process!: ui.Process
-  private _message!: ui.Message
-  // tslint:disable-next-line: variable-name
-  private _message_box!: ui.MessageBox
   private _context: Context
   private _title!: string
   private _host!: string
   private _logo!: string
   private _axios!: AxiosInstance
+  // tslint:disable-next-line: variable-name
+  private _axios_headers!: (builders: interceptors.AxiosHeaderBuilder[]) => void
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
   private _messages: LocaleMessages = { zh: lang.zh }
-  // tslint:disable-next-line: variable-name
-  private _axios_interceptor!: interceptors.AxiosInterceptor
-  // tslint:disable-next-line: variable-name
-  private _route_interceptor!: interceptors.RouteInterceptor
 
   public constructor(context?: Context) {
     this._context = context || new Context()
     this.app(App)
-    this.message(new helper.MessageHelper())
-    this.messagebox(new helper.MessageBoxHelper())
-    this.process(new helper.ProcessHelper())
-    this.interceptor(new interceptors.AxiosInterceptor())
-    this.interceptor(new interceptors.RouteInterceptor())
   }
 
   public static create(context?: Context): Builder {
@@ -73,21 +62,6 @@ export class Builder {
     return this
   }
 
-  public process(util: ui.Process): Builder {
-    this._process = util
-    return this
-  }
-
-  public message(util: ui.Message): Builder {
-    this._message = util
-    return this
-  }
-
-  public messagebox(util: ui.MessageBox): Builder {
-    this._message_box = util
-    return this
-  }
-
   public app(app: VueConstructor): Builder {
     this._app = app
     return this
@@ -103,20 +77,9 @@ export class Builder {
     return this
   }
 
-  public axios(axios: AxiosInstance, interceptor?: interceptors.AxiosInterceptor): Builder {
+  public axios(axios: AxiosInstance, headers?: (builders: interceptors.AxiosHeaderBuilder[]) => void): Builder {
     this._axios = axios
-    if (interceptor) {
-      this._axios_interceptor = interceptor
-    }
-    return this
-  }
-
-  public interceptor(interceptor: interceptors.AxiosInterceptor | interceptors.RouteInterceptor): Builder {
-    if (interceptor instanceof interceptors.AxiosInterceptor) {
-      this._axios_interceptor = interceptor
-    } else {
-      this._route_interceptor = interceptor
-    }
+    this._axios_headers = headers || (x => x)
     return this
   }
 
@@ -158,13 +121,21 @@ export class Builder {
     }
 
     if (this._axios) {
-      let interceptor = this._axios_interceptor || new interceptors.AxiosInterceptor()
-      interceptor.intercept({ message: this._message, messagebox: this._message_box, store, axios: this._axios })
+      let interceptor = new interceptors.AxiosInterceptor()
+      const headers = [new interceptors.DefaultAxiosHeaderBuilder(store)]
+      this._axios_headers(headers)
+      const context: interceptors.AxiosInterceptContext = {
+        store,
+        axios: this._axios,
+        headers,
+        factory: new adapters.ResponseAdapterFactory()
+      }
+      interceptor.intercept(context)
     }
 
     {
-      let interceptor = this._route_interceptor || new interceptors.RouteInterceptor()
-      interceptor.intercept({ message: this._message, process: this._process, store, router: this._routers })
+      let interceptor = new interceptors.RouteInterceptor()
+      interceptor.intercept({ store, router: this._routers })
     }
 
     Vue.use(VueRouter)

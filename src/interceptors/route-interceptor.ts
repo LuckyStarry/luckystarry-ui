@@ -1,3 +1,5 @@
+import { Message } from 'element-ui'
+import nprogress from 'nprogress'
 import { NavigationGuard, Route } from 'vue-router'
 import { RouteInterceptContext } from './route-intercept-context'
 
@@ -21,9 +23,7 @@ export class RouteInterceptor {
 
   public intercept(context: RouteInterceptContext) {
     context.router.beforeEach(async (to, from, next) => {
-      if (context.process) {
-        context.process.start()
-      }
+      nprogress.start()
       if (context.store.state.user.token) {
         if (to.path === '/login') {
           next({ path: '/' })
@@ -37,10 +37,8 @@ export class RouteInterceptor {
               next({ ...to, replace: true } as any)
             } catch (err) {
               await context.store.dispatch('user/ResetToken')
-              if (context.message) {
-                // tslint:disable-next-line: no-floating-promises
-                context.message.error(err || 'Has Error')
-              }
+              // tslint:disable-next-line: no-floating-promises
+              Message.error(err || 'Has Error')
               this.config.login(to, from, next)
             }
           } else {
@@ -61,9 +59,7 @@ export class RouteInterceptor {
     })
 
     context.router.afterEach((to: Route) => {
-      if (context.process) {
-        context.process.done()
-      }
+      nprogress.done()
     })
   }
 }

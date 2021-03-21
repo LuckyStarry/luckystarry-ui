@@ -1,4 +1,6 @@
+export { AxiosHeaderBuilder } from './axios-header-builder'
 export { AxiosInterceptContext } from './axios-intercept-context'
 export { AxiosInterceptor } from './axios-interceptor'
+export { DefaultAxiosHeaderBuilder } from './default-axios-header-builder'
 export { RouteInterceptContext } from './route-intercept-context'
 export { RouteInterceptor } from './route-interceptor'

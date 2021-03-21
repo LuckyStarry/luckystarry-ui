@@ -1,7 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Pagination } from '../../components'
-import { Pagination as PaginationCriteria } from '../../models'
-import { DefaultResponseAdapter, DefaultSearchResultAdapter, ResponseAdapter, SearchResultAdapter } from '../../utils'
+import { adapters, Pagination as PaginationCriteria } from '../../models'
 
 @Component({ name: 'List', components: { Pagination } })
 export default class List<TEntity, TCriteria extends PaginationCriteria> extends Vue {
@@ -17,10 +16,10 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
   public showToolbarOnSelect?: boolean
   @Prop({ type: Boolean, default: false })
   public showToolbar?: boolean
-  @Prop({ type: Object, default: () => new DefaultResponseAdapter() })
-  public responseAdapter?: ResponseAdapter
-  @Prop({ type: Object, default: () => new DefaultSearchResultAdapter() })
-  public searchResultAdapter?: SearchResultAdapter
+  @Prop({ type: Object, default: () => new adapters.ResponseAdapterFactory() })
+  public responseAdapter?: adapters.ResponseAdapterFactory
+  @Prop({ type: Object, default: () => new adapters.SearchResultAdapterFactory() })
+  public searchResultAdapter?: adapters.SearchResultAdapterFactory
 
   public list: TEntity[] = []
   public count: number = 0
@@ -31,20 +30,20 @@ export default class List<TEntity, TCriteria extends PaginationCriteria> extends
     try {
       let response = await this.searchApi(this.criteria)
       if (this.responseAdapter) {
-        let payload = this.responseAdapter.getPayload(response)
-        if (payload) {
+        const data = this.responseAdapter.create(response)
+        if (data.Success) {
           if (this.searchResultAdapter) {
-            this.list = this.searchResultAdapter.getList(payload)
-            this.count = this.searchResultAdapter.getCount(payload)
-          } else {
+            const payload = this.searchResultAdapter.create<TEntity>(data.Payload)
             this.list = payload.List || []
             this.count = payload.Count || 0
+            return
           }
+        } else {
+          this.$message.warning(`查询列表失败：${data.Message}`)
+          return
         }
-      } else {
-        this.list = response.Entity.List || []
-        this.count = response.Entity.Count || 0
       }
+      this.$message.error(`适配器不可为空`)
     } catch (e) {
       if (e) {
         if (e.message) {

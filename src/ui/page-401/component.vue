@@ -5,9 +5,10 @@
     <span class="particle" v-for="item in particles(1)" :key="item.id" :style="item.style">{{ item.text }}</span>
     <article class="content">
       <p>OOPS!</p>
-      <p><strong>401</strong> 权限不足。</p>
+      <p><strong>401</strong> 您的操作权限不足。</p>
       <p>
-        <el-link @click="backToHome">{{ $t('login.back-to-home') }}</el-link>
+        <el-link @click="backToHome">返回首页</el-link>
+        <el-link :href="$route.redirectedFrom" v-if="$route.redirectedFrom">返回重试</el-link>
       </p>
     </article>
   </main>
