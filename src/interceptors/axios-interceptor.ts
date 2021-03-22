@@ -48,7 +48,7 @@ export class AxiosInterceptor {
               break
           }
         } else {
-          let data = context.factory.create(response.data)
+          const data = context.factory.create(response.data)
           if (data.Success) {
             if (data.Message) {
               // tslint:disable-next-line: no-floating-promises

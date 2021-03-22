@@ -27,7 +27,7 @@ export class Builder {
   private _logo!: string
   private _axios!: AxiosInstance
   // tslint:disable-next-line: variable-name
-  private _axios_headers!: (builders: interceptors.AxiosHeaderBuilder[]) => void
+  private _axios_config!: { headers: (builders: interceptors.AxiosHeaderBuilder[]) => void; adapter: adapters.ResponseAdapterFactory }
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
   private _messages: LocaleMessages = { zh: lang.zh }
 
@@ -77,9 +77,12 @@ export class Builder {
     return this
   }
 
-  public axios(axios: AxiosInstance, headers?: (builders: interceptors.AxiosHeaderBuilder[]) => void): Builder {
+  public axios(
+    axios: AxiosInstance,
+    config?: { headers?: (builders: interceptors.AxiosHeaderBuilder[]) => void; adapter?: adapters.ResponseAdapterFactory }
+  ): Builder {
     this._axios = axios
-    this._axios_headers = headers || (x => x)
+    this._axios_config = Object.assign({ headers: (x: interceptors.AxiosHeaderBuilder[]) => x, adapter: new adapters.ResponseAdapterFactory() }, config)
     return this
   }
 
@@ -123,12 +126,13 @@ export class Builder {
     if (this._axios) {
       let interceptor = new interceptors.AxiosInterceptor()
       const headers = [new interceptors.DefaultAxiosHeaderBuilder(store)]
-      this._axios_headers(headers)
+      const config = this._axios_config
+      config.headers(headers)
       const context: interceptors.AxiosInterceptContext = {
         store,
         axios: this._axios,
         headers,
-        factory: new adapters.ResponseAdapterFactory()
+        factory: config.adapter
       }
       interceptor.intercept(context)
     }
