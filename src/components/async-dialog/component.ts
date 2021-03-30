@@ -14,7 +14,7 @@ export default class AsyncDialog<T = any, U = T> extends Vue {
   public width!: string
   @Prop({ type: Boolean, default: false })
   public closeOnClickModal!: boolean
-  @Prop({ type: Boolean, default: false })
+  @Prop({ type: Boolean, default: true })
   public closeOnPressEscape!: boolean
   @Prop({ type: Boolean, default: true })
   public modal!: boolean
