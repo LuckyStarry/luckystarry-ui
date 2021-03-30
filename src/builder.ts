@@ -27,7 +27,7 @@ export class Builder {
   private _logo!: string
   private _axios!: AxiosInstance
   // tslint:disable-next-line: variable-name
-  private _axios_headers!: (builders: interceptors.AxiosHeaderBuilder[]) => void
+  private _axios_config!: { headers: (builders: interceptors.AxiosHeaderBuilder[]) => void; adapter: adapters.ResponseAdapterFactory }
   private _filters: { [key: string]: Function } = Object.assign({}, filters)
   private _messages: LocaleMessages = { zh: lang.zh }
 
@@ -44,14 +44,14 @@ export class Builder {
     if (baseURL) {
       this._context.routes.baseURL = baseURL
     }
-    let builder = new builders.RouterBuilder(this._context)
+    const builder = new builders.RouterBuilder(this._context)
     config(builder)
     this._routers = builder.build()
     return this
   }
 
   public store(config: (bd: builders.StoreBuilder) => void): Builder {
-    let builder = new builders.StoreBuilder(this._context)
+    const builder = new builders.StoreBuilder(this._context)
     config(builder)
     this._store = builder.build()
     return this
@@ -77,9 +77,12 @@ export class Builder {
     return this
   }
 
-  public axios(axios: AxiosInstance, headers?: (builders: interceptors.AxiosHeaderBuilder[]) => void): Builder {
+  public axios(
+    axios: AxiosInstance,
+    config?: { headers?: (builders: interceptors.AxiosHeaderBuilder[]) => void; adapter?: adapters.ResponseAdapterFactory }
+  ): Builder {
     this._axios = axios
-    this._axios_headers = headers || (x => x)
+    this._axios_config = Object.assign({ headers: (x: interceptors.AxiosHeaderBuilder[]) => x, adapter: new adapters.ResponseAdapterFactory() }, config)
     return this
   }
 
@@ -94,8 +97,8 @@ export class Builder {
   }
 
   public i18n(name: string, config: (message: LocaleMessageObject) => LocaleMessageObject): Builder {
-    let message: LocaleMessageObject = this._messages[name] || {}
-    let obj = config(message)
+    const message: LocaleMessageObject = this._messages[name] || {}
+    const obj = config(message)
     this._messages[name] = obj || message
     return this
   }
@@ -107,8 +110,8 @@ export class Builder {
     if (!this._store) {
       this.store(() => {})
     }
-    let router = this._routers
-    let store = this._store
+    const router = this._routers
+    const store = this._store
 
     if (this._title) {
       store.state.app.title = this._title
@@ -121,20 +124,21 @@ export class Builder {
     }
 
     if (this._axios) {
-      let interceptor = new interceptors.AxiosInterceptor()
+      const interceptor = new interceptors.AxiosInterceptor()
       const headers = [new interceptors.DefaultAxiosHeaderBuilder(store)]
-      this._axios_headers(headers)
+      const config = this._axios_config
+      config.headers(headers)
       const context: interceptors.AxiosInterceptContext = {
         store,
         axios: this._axios,
         headers,
-        factory: new adapters.ResponseAdapterFactory()
+        factory: config.adapter
       }
       interceptor.intercept(context)
     }
 
     {
-      let interceptor = new interceptors.RouteInterceptor()
+      const interceptor = new interceptors.RouteInterceptor()
       interceptor.intercept({ store, router: this._routers })
     }
 
@@ -143,7 +147,7 @@ export class Builder {
     Vue.use(ElementUI, { size: store.state.app.size })
     Vue.use(VueIcon, { tagName: 'svg-icon', defaultWidth: '1em', defaultHeight: '1em' })
 
-    let directives = {
+    const directives = {
       ['permission']: new Premission(store),
       ['waves']: new Waves(),
       ['el-draggable-dialog']: new ElDraggableDialog()
@@ -157,8 +161,8 @@ export class Builder {
       Vue.filter(key, (this._filters as { [key: string]: Function })[key])
     })
 
-    let i18n = new VueI18n({ locale: 'zh', messages: this._messages })
-    let app = new Vue({
+    const i18n = new VueI18n({ locale: 'zh', messages: this._messages })
+    const app = new Vue({
       router,
       store,
       i18n,

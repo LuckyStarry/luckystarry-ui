@@ -64,7 +64,7 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        loader: 'url-loader?limit=8192'
+        loader: 'url-loader', options: { limit: 8192 }
       },
       {
         test: /\.(sa|sc)ss$/,
@@ -87,7 +87,8 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.vue']
+    extensions: ['.ts', '.js', '.vue'],
+    fallback: { path: require.resolve('path-browserify') }
   },
   plugins: [
     new VueLoaderPlugin(),

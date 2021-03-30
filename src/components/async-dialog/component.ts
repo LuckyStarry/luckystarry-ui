@@ -13,9 +13,15 @@ export default class AsyncDialog<T = any, U = T> extends Vue {
   @Prop({ type: String, default: '800px' })
   public width!: string
   @Prop({ type: Boolean, default: false })
-  public closeOnClickModal?: boolean
+  public closeOnClickModal!: boolean
+  @Prop({ type: Boolean, default: true })
+  public closeOnPressEscape!: boolean
+  @Prop({ type: Boolean, default: true })
+  public modal!: boolean
+  @Prop({ type: Boolean, default: true })
+  public modalAppendToBody!: boolean
   @Prop({ type: Boolean, default: false })
-  public closeOnPressEscape?: boolean
+  public appendToBody!: boolean
 
   private visible: boolean = false
   private loading: boolean = false
