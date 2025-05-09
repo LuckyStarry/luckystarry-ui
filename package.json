@@ -58,7 +58,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-env": "^7.27.1",
     "@types/chai": "^4.2.11",
     "@types/js-cookie": "^2.2.6",
     "@types/mocha": "^7.0.2",
